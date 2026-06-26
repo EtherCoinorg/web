@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin Yellowpaper — Technical Specification</title>
+<meta name="description" content="Ethercoin technical yellowpaper: protocol specification for decentralized AI compute and distillation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 860px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 860px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+h4 { font-size: 17px; font-weight: 600; margin: 22px 0 8px; color: #333; }
+p { margin-bottom: 16px; font-size: 15px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 15px; color: #333; }
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #f4f4fa; padding: 2px 6px; border-radius: 4px;
+  font-size: 13px;
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1a1a2e; color: #d4d4e8;
+  padding: 20px; border-radius: 10px; margin: 20px 0;
+  font-size: 13px; line-height: 1.6; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #00d4aa; background: #f0fdf8;
+  padding: 16px 20px; margin: 20px 0; font-size: 15px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+  pre { font-size: 12px; padding: 14px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/">&#8592; Back to Home</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Technical Yellowpaper</p>
+  <h1>Decentralized AI Compute &amp; Distillation Protocol</h1>
+  <p class="meta">Version 2.0 &mdash; June 2026 &middot; Token: ETHER &middot; <a href="/whitepaper/">Whitepaper</a></p>
+
+  <h2>1. Introduction</h2>
+  <p>This yellowpaper defines the technical architecture of the Ethercoin decentralized AI compute network. The network provides a decentralized, censorship-resistant, verifiable execution environment for general AI inference, model optimization, and knowledge distillation.</p>
+  <p>Core challenge: <strong>how to precisely measure heterogeneous "useful computation" without trusting any single party, while systematically preventing cheating</strong>. This document details the EtherFLOP measurement standard, layered verification framework, anti-cheat algorithms, and the complete distillation protocol specification.</p>
+
+  <h2>2. System Overview</h2>
+  <p>Ethercoin uses a layered architecture:</p>
+  <pre>+---------------------------------------------------+
+|              Application Layer                     |
+|   +-----------+ +------------+ +----------------+ |
+|   | Inference | |Optimization| |  Distillation   | |
+|   +-----------+ +------------+ +----------------+ |
++---------------------------------------------------+
+|         Market &amp; Consensus Layer                   |
+|   +--------------------------------------------+  |
+|   |Task Matching|Verification|Settlement/Slashing| |
+|   +--------------------------------------------+  |
++---------------------------------------------------+
+|            Execution Layer                         |
+|   +----------+ +----------+ +------------------+  |
+|   |GPU Nodes | |Proxies   | |  Verifiers       |  |
+|   +----------+ +----------+ +------------------+  |
++---------------------------------------------------+
+|         DA &amp; Storage Layer                         |
+|         IPFS / Filecoin / On-chain Events          |
++---------------------------------------------------+</pre>
+  <p><strong>On-chain:</strong> Smart contracts on the Ethercoin native chain (EVM-compatible).</p>
+  <p><strong>Off-chain:</strong> Node clients, scheduling services, distributed proxy network, GPU execution environments communicating via P2P.</p>
+
+  <h2>3. EtherFLOP: Measurement System</h2>
+
+  <h3>3.1 Unit Definition</h3>
+  <p><strong>EtherFLOP (EFLOP)</strong> = 10<sup>15</sup> floating-point operations. Baseline model: a standardized, frozen <strong>LLaMA-7B</strong> executing one forward pass (input = 1 token, output logits = vocabulary size). Theoretical FLOPs = 2 &times; parameters &times; sequence length, publicly computed and independently auditable.</p>
+
+  <h3>3.2 Task Workload Estimation</h3>
+  <p>For any submitted model M (identified by IPFS CID) and input shape (batch, seq_len), the off-chain scheduler parses the computation graph and calculates the theoretical FLOPs value F<sub>theoretical</sub>. This value is signed by the <strong>oracle committee</strong> (multiple independent nodes staking ETHER, BFT consensus) and written to the task contract's <code>expectedEFLOPS</code> field. Estimation error must stay within &plusmn;5%, calibrated by community governance.</p>
+
+  <h3>3.3 Supply-Side Proofs</h3>
+  <p>Nodes submit a <code>WorkProof</code>:</p>
+  <pre>WorkProof {
+    outputCID: bytes32,
+    anchorHashes: bytes32[],  // Optimistic mode: random layer activations
+    zkProof: bytes,           // ZK mode: zk-SNARK proof
+    teeAttestation: bytes     // TEE mode: remote attestation report
+}</pre>
+
+  <h4>3.3.1 Optimistic Verification</h4>
+  <p><strong>Random anchor generation:</strong> On-chain VRF generates k random layer indices (l<sub>1</sub>, ..., l<sub>k</sub>) and corresponding random input seeds at task creation. Nodes provide activation hashes for these layers.</p>
+  <p><strong>Verifier spot check:</strong> Randomly selected verifiers download model and input from IPFS, re-execute specified layers, and compare hashes. If all k anchors match, the computation is accepted. A cheater skipping fraction f of computation has detection probability 1 - (1-f)<sup>k</sup>, converging to 1 exponentially with k.</p>
+  <p><strong>Binary challenge:</strong> If a verifier detects an anchor mismatch, they initiate an on-chain interactive binary game. Both parties iteratively narrow the dispute to a single operation. The contract executes that single step for a constant gas cost, determining the winner.</p>
+
+  <h4>3.3.2 Zero-Knowledge Proofs</h4>
+  <p>Nodes use ZK compilers (e.g., zkLLVM or custom circuits) to transform model inference into R1CS/AIR constraint systems and generate zk-SNARK proofs. The contract verifies proof validity. Circuit size C has a fixed proportional relationship to theoretical FLOPs (coefficient &alpha; set by governance). Verified EFLOPs = C &times; &alpha;.</p>
+
+  <h4>3.3.3 TEE Attestation</h4>
+  <p>Nodes run inference inside Intel SGX / AMD SEV enclaves, generating remote attestation reports containing code hash, input hash, output hash, and hardware-trusted execution time. The contract verifies report signatures against Intel/AMD on-chain public keys and converts execution time to equivalent EFLOPs using the GPU-in-TEE performance model.</p>
+
+  <h3>3.4 Demand-Side Measurement</h3>
+  <p>User payment = <code>expectedEFLOPS</code> &times; current market EFLOP price (discovered via on-chain order book). Challenge stake is proportional to task value. If arbitration finds the challenge invalid, the stake is forfeited to the node.</p>
+
+  <h2>4. Compute Market Protocol</h2>
+
+  <h3>4.1 Node Registration</h3>
+  <p>Call <code>NodeRegistry.register(nodeType, hardwareProof, stakeAmount)</code>. Hardware proof submitted via TEE self-attestation report or third-party benchmark results; perjury is slashable. On-chain <strong>Reputation</strong> is computed from task completion rate, correctness ratio, and average response time, affecting task assignment weight.</p>
+
+  <h3>4.2 Task Lifecycle (Inference)</h3>
+  <ol>
+    <li><strong>Submit:</strong> User calls <code>TaskMarket.createTask(modelCID, inputCID, expectedEFLOPS, verificationMode, reward)</code>, locking ETHER.</li>
+    <li><strong>Match:</strong> Off-chain matching engine listens for events, nominates node sets based on reputation and pricing. Contract uses VRF to select nodes, preventing targeted collusion.</li>
+    <li><strong>Execute &amp; submit:</strong> Node generates <code>WorkProof</code> and submits it.</li>
+    <li><strong>Verify:</strong> Verification follows the selected mode. In optimistic mode, verifiers may submit challenges during the challenge period.</li>
+    <li><strong>Settle:</strong> After challenge period (or immediate for ZK/TEE), rewards are distributed and penalties triggered for cheating.</li>
+  </ol>
+
+  <h3>4.3 Anti-Cheat Matrix</h3>
+  <table>
+    <tr><th>Attack</th><th>Defense</th><th>Implementation</th></tr>
+    <tr><td>Sybil</td><td>Stake + reputation</td><td>New node task limit = f(stake, historical reputation)</td></tr>
+    <tr><td>Fake compute</td><td>Layered verification</td><td>Optimistic anchors / ZK proofs / TEE attestations</td></tr>
+    <tr><td>Model spoofing</td><td>Weight hash whitelist + anchor checks</td><td><code>modelCID</code> must be on-chain; different model architectures produce distinct activation distributions</td></tr>
+    <tr><td>Buyer-seller collusion</td><td>Random verifier selection + verifier staking</td><td>VRF selects verifiers; verifier stakes match miner stakes</td></tr>
+    <tr><td>Gradient fraud</td><td>Checkpoint evaluation + optimizer state hashes</td><td>Verifiers run test-set inference; no metric improvement = slash</td></tr>
+    <tr><td>Distillation forgery</td><td>Independent path reproduction + proxy signatures</td><td>Verifiers get responses through different proxy paths; semantic similarity comparison</td></tr>
+    <tr><td>Proxy tampering</td><td>Path signatures + anomaly detection</td><td>Each hop signs the payload hash chain; divergence penalizes intermediate hops</td></tr>
+  </table>
+
+  <h2>5. Inference &amp; Optimization Technical Spec</h2>
+
+  <h3>5.1 Inference ABI</h3>
+  <p>Standard EIABI:</p>
+  <pre>{
+  "model_cid": "bafy...",
+  "input": {"prompt": "...", "max_tokens": 256, "temperature": 0.7},
+  "expectedEFLOPS": 1500,
+  "verificationMode": "optimistic" | "zk" | "tee"
+}</pre>
+
+  <h3>5.2 Optimization Tasks</h3>
+  <p>Tasks output the optimized model CID plus work proof (including quantization error report or fine-tuned weight delta hashes). Verifiers reproduce the optimization and compare results.</p>
+
+  <h2>6. Distillation Protocol</h2>
+
+  <h3>6.1 Design Goals</h3>
+  <p>Extract knowledge from closed-source APIs with verifiable, anti-censorship processes. Workload measured in "valid data points."</p>
+
+  <h3>6.2 Core Contract: <code>DistillationMarket</code></h3>
+  <ul>
+    <li><code>createTask(targetModel, reward, promptTreeRoot)</code>: Creator locks ETHER.</li>
+    <li><code>claimBatch(taskID, stake)</code>: Miner stakes ETHER, claims a prompt batch.</li>
+    <li><code>submitBatch(taskID, batchID, dataCID, responseHash, proxyPathSigs)</code>: Submits results and proxy route signatures.</li>
+    <li><code>challengeBatch(taskID, batchID, proof)</code>: Verifier submits challenge.</li>
+    <li><code>finalizeBatch(taskID, batchID)</code>: Settlement.</li>
+  </ul>
+
+  <h3>6.3 Prompt Distribution</h3>
+  <p>The DAO maintains a topic tree with its root stored in the contract. Miners receive leaf hashes and Merkle paths via VRF, retrieving plaintext prompts from IPFS off-chain.</p>
+
+  <h3>6.4 Proxy Network &amp; Path Signatures</h3>
+  <p>Proxy nodes register public keys and stake ETHER. Miners build onion-encrypted multi-hop paths; each hop decrypts the next address and forwards. Responses carry a path signature chain: <code>Sign<sub>N<sub>k</sub></sub>(...Sign<sub>N<sub>2</sub></sub>(Sign<sub>N<sub>1</sub></sub>(responseHash)))</code>. The contract verifies path integrity.</p>
+
+  <h3>6.5 Verification &amp; Measurement</h3>
+  <p><strong>Semantic verification:</strong> Verifiers retrieve responses for the same prompt through <strong>completely different proxy paths</strong> and compute cosine similarity using a public embedding model. Similarity above threshold &theta; (e.g., 0.92) counts as a valid data point.</p>
+  <p><strong>Measurement:</strong> Miner reward = verified data points &times; unit data point price. Invalid data points yield zero reward and reduce reputation.</p>
+
+  <h3>6.6 Arbitration</h3>
+  <p>Disputes handled by the arbitration contract. Multiple arbitrators (high-stake verifiers) independently judge and vote. Majority decision prevails.</p>
+
+  <h2>7. Distributed Training Integration</h2>
+  <p>Training tasks are incorporated into the EtherFLOP framework. Users specify base model CID, dataset CID, and training configuration. <code>expectedEFLOPS</code> is calculated from total optimization steps &times; step FLOPs.</p>
+  <p>Nodes submit periodic checkpoint hashes and gradient norm intermediates. Verifiers re-run random checkpoints to confirm real execution. After training, verifiers evaluate model performance on a public test set. Failure to meet improvement targets results in partial stake slashing.</p>
+
+  <h2>8. Security &amp; Privacy</h2>
+  <ul>
+    <li><strong>Measurement security:</strong> Anchor models and oracle committees make EFLOPs non-manipulable. ZK proofs provide trustless measurement.</li>
+    <li><strong>Sybil defense:</strong> High staking and task limits that scale with reputation.</li>
+    <li><strong>Privacy:</strong> Inference inputs decrypted inside TEE. Distillation prompts onion-encrypted through the proxy network.</li>
+    <li><strong>Censorship resistance:</strong> All contracts are non-upgradable or DAO-controlled. Proxy network is decentralized with libp2p noise encryption.</li>
+  </ul>
+
+  <h2>9. Economic Parameters</h2>
+  <table>
+    <tr><th>Parameter</th><th>Initial Value</th><th>Description</th></tr>
+    <tr><td><code>EFLOP_BASELINE_MODEL</code></td><td>Qm... (LLaMA-7B)</td><td>Baseline model CID</td></tr>
+    <tr><td><code>OPTIMISTIC_ANCHORS_DEFAULT</code></td><td>5</td><td>Default spot-check anchors</td></tr>
+    <tr><td><code>ZK_PROOF_ALPHA</code></td><td>1.2</td><td>FLOPs-to-circuit-size coefficient</td></tr>
+    <tr><td><code>MIN_STAKE_MINING</code></td><td>1000 ETHER</td><td>Minimum miner stake</td></tr>
+    <tr><td><code>MIN_STAKE_DISTILL</code></td><td>100 ETHER</td><td>Minimum distillation miner stake</td></tr>
+    <tr><td><code>CHALLENGE_PERIOD</code></td><td>604800 s</td><td>Challenge period (7 days)</td></tr>
+    <tr><td><code>VALIDATOR_FEE_RATIO</code></td><td>5%</td><td>Verifier fee percentage</td></tr>
+    <tr><td><code>SLASH_RATIO</code></td><td>50%</td><td>Cheating penalty ratio</td></tr>
+    <tr><td><code>SIMILARITY_THRESHOLD</code></td><td>0.92</td><td>Distillation quality threshold</td></tr>
+  </table>
+  <p>All parameters are hardcoded in system contracts. The DAO may modify them through proposals (with scope limits and timelocks).</p>
+
+  <h2>10. Conclusion</h2>
+  <p>Ethercoin's technical architecture centers on <strong>verifiable measurement of useful computation</strong>. Through the EtherFLOP unit, layered proofs, random anchors, ZK/TEE verification, and a comprehensive anti-cheat matrix, the network enables fair and secure trading of AI compute in an untrusted environment. The distillation protocol extends this compute market into a tool for knowledge liberation.</p>
+  <blockquote>Website: <strong>https://ethercoin.org</strong> &middot; Whitepaper and code repository will be available at the same domain.</blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/">Back to Ethercoin.org</a></p>
+</div>
+</body>
+</html>

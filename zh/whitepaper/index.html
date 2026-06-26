@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin 白皮书 — 去中心化AI算力网络</title>
+<meta name="description" content="Ethercoin 白皮书：去中心化AI推理、优化与知识蒸馏网络。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 820px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 820px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+p { margin-bottom: 16px; font-size: 16px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 16px; color: #333; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #6c63ff; background: #f8f6ff;
+  padding: 16px 20px; margin: 20px 0; font-size: 16px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/zh/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/zh/">&#8592; 返回首页</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin 白皮书</p>
+  <h1>去中心化AI算力网络<br>用于推理与优化</h1>
+  <p class="meta">版本 1.0 &mdash; 2025年1月 &middot; 代币：ETHER &middot; <a href="/zh/yellowpaper/">黄皮书</a></p>
+
+  <h2>摘要</h2>
+  <p>人工智能正在重塑世界，但高性能AI推理与优化资源高度集中。少数云服务商和闭源模型厂商掌控着算力、模型访问权限和定价权。地域限制和审查制度将大量人口排斥在先进AI之外。</p>
+  <p>Ethercoin 是一个<strong>去中心化AI算力网络</strong>，通过全球分布的GPU节点提供无需许可的推理与优化服务。该网络的核心创新在于<strong>对有效计算的可验证度量</strong>，确保每次贡献都被精确量化并公平奖励，同时消除了传统工作量证明的能源浪费。网络使用原生<strong>ETHER</strong>代币作为算力支付和激励的通用媒介。</p>
+  <p>在核心算力市场之上，Ethercoin 引入了<strong>去中心化模型蒸馏协议</strong>，使社区能够协作地从闭源模型中提取知识，并将其转化为完全开放的高质量模型和数据集——永远打破知识垄断。</p>
+  <p>Ethercoin 的目标：成为<strong>AI时代的公共算力与知识基础设施</strong>。</p>
+
+  <h2>1. 引言</h2>
+  <p>当前AI算力市场面临三重困境：</p>
+  <ol>
+    <li><strong>算力垄断：</strong>大规模GPU集群集中在少数云服务商手中，定价不透明，条款随时可变。</li>
+    <li><strong>封闭模型与访问限制：</strong>最先进的模型仅通过受控API提供，受地域、国籍和身份限制。</li>
+    <li><strong>知识囤积：</strong>闭源模型从公共数据中学习，却将其输出封锁起来，背叛了开放互联网。</li>
+  </ol>
+  <p>Ethercoin 的解决方案：构建一个<strong>开放、无需信任的算力网络</strong>，通过加密经济激励层实现。任何拥有GPU的人都可以贡献算力并赚取ETHER。任何持有ETHER的人都可以不受歧视地使用AI推理与优化服务。网络建立了精确度量有效计算并系统防止作弊的机制，打造公平、安全的市场。</p>
+
+  <h2>2. 网络架构</h2>
+  <h3>2.1 算力资源层</h3>
+  <p><strong>矿工：</strong>任何将GPU连接到网络的实体。节点运行Ethercoin客户端，自动接收推理或优化任务，完成后获得ETHER奖励。</p>
+  <p><strong>计算类型：</strong>初期专注于AI模型推理与优化（量化、蒸馏、微调），未来扩展到通用计算。</p>
+  <p><strong>节点多样性：</strong>从单GPU家用机到专业数据中心集群。网络根据算力等级和声誉分配任务。</p>
+
+  <h3>2.2 市场与调度层</h3>
+  <p><strong>任务创建者：</strong>需要AI推理或优化的用户。提交任务描述并锁定ETHER作为支付。</p>
+  <p><strong>去中心化调度器：</strong>链上智能合约结合链下匹配引擎，根据声誉、算力定价和延迟将任务分配给最优节点集。</p>
+  <p><strong>验证与结算：</strong>乐观验证、零知识证明和可信执行环境的分层组合确保正确性。节点质押ETHER作为诚信保证。</p>
+
+  <h3>2.3 应用协议层</h3>
+  <p>开放接口允许任何人在Ethercoin上构建去中心化AI应用。首个核心应用是<strong>蒸馏协议</strong>，利用网络的全球算力和代币激励，将闭源知识转化为开放模型。</p>
+
+  <h2>3. 度量有效计算：EtherFLOP 与 EtherScore</h2>
+  <p>传统加密货币通过哈希碰撞证明工作量——这种计算没有实际用途。Ethercoin 的突破在于：<strong>证明AI算力确实用于有价值的推理或优化，并精确度量该贡献</strong>。</p>
+
+  <h3>3.1 单位：EtherFLOP</h3>
+  <p><strong>EtherFLOP (EFLOP)</strong> = 10<sup>15</sup> 次浮点运算（1 PetaFLOP）。该单位锚定在一个公共、不可变的<strong>标准参考模型</strong>上（例如，固定版本的LLaMA-7B执行一次完整前向传播）。任何人都可以独立复现并验证该计算。</p>
+
+  <h3>3.2 任务复杂度估算</h3>
+  <p>用户提交任务时，系统根据模型计算图自动推导出预期工作量（W<sub>expected</sub>）（以EFLOP计）。该估算由预言机委员会（多签）确认，并写入智能合约作为支付和验证的基准。</p>
+
+  <h3>3.3 供应方证明</h3>
+  <p>完成计算后，节点提交<strong>工作完成证明</strong>。分层方法根据任务价值适配：</p>
+  <ul>
+    <li><strong>乐观验证：</strong>节点提交输出哈希加上随机中间层激活哈希（抽检锚点）。验证者随机检查锚点。全部匹配则确认诚实计算。</li>
+    <li><strong>零知识证明：</strong>节点生成zk-SNARK，证明在指定模型和输入上执行了完整的推理。链上合约验证该证明，确认计算量及正确性。</li>
+    <li><strong>TEE 认证：</strong>针对隐私敏感任务，计算在硬件安全 enclave（Intel SGX / AMD SEV）内运行。远程认证报告包括执行时间，通过GPU-in-TEE性能模型映射为EFLOP。</li>
+  </ul>
+
+  <h3>3.4 需求方反作弊</h3>
+  <p>为防止需求方作弊（例如创建空任务并恶意拒绝支付），全额ETHER奖励在任务创建时即被锁定。挑战者也必须质押。如果挑战被判定为无效，质押金将被没收并支付给节点——对称博弈确保市场公平。</p>
+
+  <h2>4. ETHER 代币经济</h2>
+
+  <h3>4.1 代币功能</h3>
+  <table>
+    <tr><th>功能</th><th>描述</th></tr>
+    <tr><td>算力支付</td><td>所有推理、优化和训练任务以ETHER支付</td></tr>
+    <tr><td>挖矿奖励</td><td>节点通过可验证的有效计算赚取ETHER</td></tr>
+    <tr><td>质押与安全</td><td>节点和验证者质押ETHER；违规行为将被罚没</td></tr>
+    <tr><td>治理</td><td>ETHER持有者参与协议参数投票</td></tr>
+    <tr><td>蒸馏激励</td><td>矿工、验证者和代理运营者赚取ETHER</td></tr>
+  </table>
+
+  <h3>4.2 供应与发行</h3>
+  <p><strong>最大供应量：</strong>21万亿 ETHER</p>
+  <p><strong>创世：</strong>90%分配给早期贡献者、开发基金和社区建设（按归属计划分期释放）</p>
+  <p><strong>挖矿：</strong>剩余10%在约10年内释放（每年1%），通过可验证的算力挖矿和蒸馏挖矿产出，奖励与EtherFLOP贡献直接挂钩。挖矿奖励期结束后，由社区投票决定是否激活每年0.1%永续激励。此激励条款与销毁机制相结合，可能形成通缩价值机制。</p>
+  <p><strong>销毁：</strong>部分交易费和罚没资金定期销毁，为长期持有者创造价值。</p>
+
+  <h3>4.3 经济飞轮</h3>
+  <p>算力需求增长 &rarr; ETHER需求上升 &rarr; 矿工收入增加 &rarr; 更多节点加入 &rarr; 网络算力增强 &rarr; 服务更优 &rarr; 需求进一步增长。蒸馏协议注入了额外的ETHER消耗和激励场景。EtherFLOP标准使所有贡献可通约，将激励与实际工作精确对齐。</p>
+
+  <h2>5. 应用：去中心化AI推理与优化</h2>
+
+  <h3>5.1 推理市场</h3>
+  <p>模型发布者将优化后的模型上传至IPFS/Filecoin，并在Ethercoin上注册推理服务。用户提交推理请求，支付ETHER，网络调度至最优节点。节点通过EtherFLOP证明系统证明计算量并赚取奖励。TEE或ZK环境保护用户输入隐私。</p>
+
+  <h3>5.2 优化市场</h3>
+  <p>任务包括量化、知识蒸馏和LoRA微调。用户指定源模型和优化目标。预言机委员会校准预期计算量。节点完成优化，输出优化后模型的CID及工作证明，验证后赚取ETHER。</p>
+
+  <h2>6. 应用：去中心化模型蒸馏</h2>
+
+  <h3>6.1 问题陈述</h3>
+  <p>最先进的闭源模型仅通过受限API提供，受地域和国籍阻挡。知识属于全人类，不应被少数实体垄断。</p>
+
+  <h3>6.2 蒸馏协议</h3>
+  <p>Ethercoin 蒸馏协议在算力网络之上运行，实现完整的"提取-验证-聚合-开放"流水线：</p>
+  <ul>
+    <li><strong>蒸馏矿工：</strong>质押ETHER，认领提示批次，通过分布式代理网络调用闭源API，生成提示-响应对，上传至IPFS并提交承诺。</li>
+    <li><strong>代理账户网络：</strong>全球参与者共享闭源模型订阅，运行代理节点，通过转发赚取ETHER。多跳路由使请求对目标服务器不可追踪。</li>
+    <li><strong>验证者：</strong>通过独立代理路径随机重新采样已提交数据，比较语义相似度。通过验证的数据获得奖励；欺诈数据导致质押金被罚没。</li>
+    <li><strong>开放数据集：</strong>通过验证的蒸馏数据以CC-BY-SA / CC0许可证发布。</li>
+  </ul>
+  <p>蒸馏工作量以<strong>有效数据点</strong>衡量，只有通过验证者语义相似度检查的数据才被计入，防止垃圾提交。</p>
+
+  <h3>6.3 从数据到模型</h3>
+  <p>当蒸馏数据积累到足够量时，任何人都可以发起训练任务，支付ETHER使用Ethercoin算力网络进行分布式训练。每个训练步骤都生成可验证的计算证明（梯度哈希、检查点认证）。最终输出是完全开源的模型，可在推理市场上注册，收益流回蒸馏生态系统。</p>
+
+  <h2>7. 反作弊系统</h2>
+  <p>Ethercoin 系统性地防止攻击：</p>
+  <ul>
+    <li><strong>女巫攻击：</strong>高质押要求和声誉积累使虚假身份无利可图。</li>
+    <li><strong>虚假算力报告：</strong>乐观锚点检查使作弊成功率随检查次数呈指数级下降。ZK证明和TEE彻底消除虚假计算。</li>
+    <li><strong>模型欺骗：</strong>提交的权重哈希必须匹配链上模型CID。中间层激活抽检暴露模型架构不匹配。</li>
+    <li><strong>买卖双方勾结：</strong>验证者由合约随机选择并面临自身的罚没风险。勾结失败概率随验证者数量呈指数级上升。</li>
+    <li><strong>蒸馏作弊：</strong>独立代理路径复现和路径签名可检测伪造的API响应。作弊代理将被罚没。</li>
+  </ul>
+
+  <h2>8. 路线图</h2>
+
+  <h3>第一阶段：创世（2026年第三至第四季度）</h3>
+  <ul>
+    <li>Ethercoin 主网上线，支持推理任务和挖矿</li>
+    <li>部署 ETHER 代币、质押合约和分层验证框架</li>
+    <li>启动蒸馏协议测试版</li>
+  </ul>
+
+  <h3>第二阶段：扩展（2027年）</h3>
+  <ul>
+    <li>集成 ZK 证明验证以增强安全性和隐私保护</li>
+    <li>模型优化市场上线</li>
+    <li>蒸馏网络满负荷运行，数据集达到10亿+ token</li>
+    <li>社区治理启动</li>
+  </ul>
+
+  <h3>第三阶段：繁荣（2028年及以后）</h3>
+  <ul>
+    <li>完全去中心化治理，团队权限移交至 DAO</li>
+    <li>蒸馏模型可媲美顶级闭源模型</li>
+    <li>算力-蒸馏-开源-服务自循环收入体系</li>
+  </ul>
+
+  <h2>9. 团队与社区</h2>
+  <p>Ethercoin 由来自世界各地的AI研究员、分布式系统工程师和密码学家组成的分布式团队构建。核心贡献者推动早期开发，治理权逐步移交。项目无法律实体，以DAO形式存在，网站 ethercoin.org 是唯一官方信息来源。</p>
+
+  <h2>10. 结语</h2>
+  <p>Ethercoin 不仅仅是一个区块链项目。它是一场运动：用去中心化算力网络打破AI垄断；用可验证的有效计算取代浪费能源的工作量证明；用经济力量提取并释放被闭源高墙囚禁的知识。当ETHER在无数节点之间流动，当全球GPU共同计算，当匿名个体协作蒸馏——一个不可关闭的全球AI基础设施就此诞生。</p>
+  <blockquote><strong>知识属于全人类。算力也是如此。</strong></blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/zh/">返回 Ethercoin.org</a></p>
+</div>
+</body>
+</html>

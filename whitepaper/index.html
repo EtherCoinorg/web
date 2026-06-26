@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin Whitepaper — Decentralized AI Compute Network</title>
+<meta name="description" content="Ethercoin whitepaper: decentralized AI inference, optimization, and knowledge distillation network.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 820px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 820px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+p { margin-bottom: 16px; font-size: 16px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 16px; color: #333; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #6c63ff; background: #f8f6ff;
+  padding: 16px 20px; margin: 20px 0; font-size: 16px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/">&#8592; Back to Home</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Whitepaper</p>
+  <h1>Decentralized AI Compute Network<br>for Inference &amp; Optimization</h1>
+  <p class="meta">Version 1.0 &mdash; January 2025 &middot; Token: ETHER &middot; <a href="/yellowpaper/">Yellowpaper</a></p>
+
+  <h2>Abstract</h2>
+  <p>Artificial intelligence is reshaping the world, but high-performance AI inference and optimization resources are highly centralized. A few cloud providers and closed-source model vendors control compute power, model access, and pricing. Geographic restrictions and censorship exclude large populations from advanced AI.</p>
+  <p>Ethercoin is a <strong>decentralized AI compute network</strong> that provides permissionless inference and optimization services through globally distributed GPU nodes. The network's core innovation is <strong>verifiable measurement of useful computation</strong>, ensuring every contribution is accurately quantified and fairly rewarded, while eliminating the wasteful energy consumption of traditional proof-of-work. The network uses the native <strong>ETHER</strong> token as the universal medium for compute payments and incentives.</p>
+  <p>Atop the core compute market, Ethercoin introduces the <strong>Decentralized Model Distillation Protocol</strong>, enabling communities to collaboratively extract knowledge from closed-source models and transform it into fully open, high-quality models and datasets&mdash;breaking knowledge monopolies forever.</p>
+  <p>Ethercoin's goal: become the <strong>public compute and knowledge infrastructure of the AI age</strong>.</p>
+
+  <h2>1. Introduction</h2>
+  <p>The current AI compute market faces a triple dilemma:</p>
+  <ol>
+    <li><strong>Compute monopoly:</strong> Large GPU clusters are concentrated among a few cloud providers with opaque pricing and changeable terms.</li>
+    <li><strong>Closed models &amp; access restrictions:</strong> State-of-the-art models are only available through controlled APIs, blocked by geography, nationality, and identity.</li>
+    <li><strong>Knowledge hoarding:</strong> Closed-source models learn from public data but wall off their output, betraying the open internet.</li>
+  </ol>
+  <p>Ethercoin's solution: a crypto-economic incentive layer that builds an <strong>open, trustless compute network</strong>. Anyone with a GPU can contribute and earn ETHER. Anyone with ETHER can use AI inference and optimization services without discrimination. The network establishes a precise system for measuring useful computation and systematically preventing cheating, creating a fair and secure marketplace.</p>
+
+  <h2>2. Network Architecture</h2>
+  <h3>2.1 Compute Resource Layer</h3>
+  <p><strong>Miners:</strong> Any entity that connects a GPU to the network. Nodes run the Ethercoin client, automatically receive inference or optimization tasks, and earn ETHER rewards upon completion.</p>
+  <p><strong>Compute types:</strong> Initially focused on AI model inference and optimization (quantization, distillation, fine-tuning), expanding to general computation in the future.</p>
+  <p><strong>Node diversity:</strong> From single-GPU home machines to professional datacenter clusters. The network assigns tasks based on compute tier and reputation.</p>
+
+  <h3>2.2 Market &amp; Scheduling Layer</h3>
+  <p><strong>Task creators:</strong> Users who need AI inference or optimization. They submit task descriptions and lock ETHER as payment.</p>
+  <p><strong>Decentralized scheduler:</strong> On-chain smart contracts combined with off-chain matching engines assign tasks to optimal node sets based on reputation, compute pricing, and latency.</p>
+  <p><strong>Verification &amp; settlement:</strong> A layered combination of optimistic verification, zero-knowledge proofs, and trusted execution environments ensures correctness. Nodes stake ETHER as a good-faith guarantee.</p>
+
+  <h3>2.3 Application Protocol Layer</h3>
+  <p>Open interfaces allow anyone to build decentralized AI applications on Ethercoin. The first core application is the <strong>Distillation Protocol</strong>, leveraging the network's global compute power and token incentives to transform closed-source knowledge into open models.</p>
+
+  <h2>3. Measuring Useful Computation: EtherFLOP &amp; EtherScore</h2>
+  <p>Traditional cryptocurrency mining proves work through hash collisions&mdash;computation with no practical use. Ethercoin's breakthrough: <strong>proving that AI compute power is genuinely used for valuable inference or optimization, and precisely measuring that contribution</strong>.</p>
+
+  <h3>3.1 Unit: EtherFLOP</h3>
+  <p><strong>EtherFLOP (EFLOP)</strong> = 10<sup>15</sup> floating-point operations (1 PetaFLOP). This unit is anchored to a public, immutable <strong>standard reference model</strong> (e.g., a fixed version of LLaMA-7B executing one complete forward pass). Anyone can independently reproduce and verify the computation.</p>
+
+  <h3>3.2 Task Complexity Estimation</h3>
+  <p>When a user submits a task, the system automatically derives the expected workload (W<sub>expected</sub>) in EFLOPs from the model's computation graph. This estimate is confirmed by an oracle committee (multi-sig) and written into the smart contract as the baseline for payment and verification.</p>
+
+  <h3>3.3 Supply-Side Proofs</h3>
+  <p>After completing computation, the node submits a <strong>work completion proof</strong>. The stratified approach adapts to task value:</p>
+  <ul>
+    <li><strong>Optimistic verification:</strong> Node submits output hash plus random intermediate-layer activation hashes (spot-check anchors). Verifiers randomly check anchors. Honest computation confirmed if all match.</li>
+    <li><strong>Zero-knowledge proofs:</strong> Node generates a zk-SNARK proving complete inference was executed on the specified model and input. The on-chain contract verifies this proof, confirming computation quantity and correctness.</li>
+    <li><strong>TEE attestations:</strong> For privacy-sensitive tasks, computation runs inside hardware security enclaves (Intel SGX / AMD SEV). Remote attestation reports, including execution time mapped to EFLOPs via the GPU-in-TEE performance model.</li>
+  </ul>
+
+  <h3>3.4 Demand-Side Anti-Cheat</h3>
+  <p>To prevent demand-side cheating (e.g., creating empty tasks and maliciously refusing payment), the full ETHER reward is locked at task creation. Challengers must also stake. If the challenge is deemed invalid, the stake is forfeited and paid to the node&mdash;a symmetrical game ensuring market fairness.</p>
+
+  <h2>4. ETHER Token Economics</h2>
+
+  <h3>4.1 Token Functions</h3>
+  <table>
+    <tr><th>Function</th><th>Description</th></tr>
+    <tr><td>Compute payment</td><td>All inference, optimization, and training tasks paid in ETHER</td></tr>
+    <tr><td>Mining rewards</td><td>Nodes earn ETHER for verifiable useful computation</td></tr>
+    <tr><td>Staking &amp; security</td><td>Nodes and verifiers stake ETHER; misbehavior is slashed</td></tr>
+    <tr><td>Governance</td><td>ETHER holders participate in protocol parameter voting</td></tr>
+    <tr><td>Distillation incentives</td><td>Miners, verifiers, and proxy operators earn ETHER</td></tr>
+  </table>
+
+  <h3>4.2 Supply &amp; Emission</h3>
+  <p><strong>Max supply:</strong> 21 trillion ETHER</p>
+  <p><strong>Genesis:</strong> 90% for early contributors, development fund, and community building (locked with vesting schedule for phased release)</p>
+  <p><strong>Mining:</strong> Remaining 10% released over ~10 years (1% per year) via verifiable compute and distillation mining, with rewards directly proportional to EtherFLOP contribution. After the mining reward period ends, the community may vote to activate a 0.1% perpetual annual incentive. This incentive mechanism, combined with regular burning of fees and penalties, creates a potentially deflationary value mechanism for long-term holders.</p>
+  <p><strong>Burning:</strong> A portion of transaction fees and slashed funds is periodically burned, creating long-term value for holders.</p>
+
+  <h3>4.3 Economic Flywheel</h3>
+  <p>Growing compute demand &rarr; rising ETHER demand &rarr; higher miner revenue &rarr; more nodes join &rarr; stronger network compute &rarr; better service &rarr; more demand. The distillation protocol injects additional ETHER consumption and incentive scenarios. The EtherFLOP standard makes all contributions commensurable, precisely aligning incentives with real work.</p>
+
+  <h2>5. Application: Decentralized AI Inference &amp; Optimization</h2>
+
+  <h3>5.1 Inference Market</h3>
+  <p>Model publishers upload optimized models to IPFS/Filecoin and register inference services on Ethercoin. Users submit inference requests, pay ETHER, and the network schedules to the best node. Nodes prove computation via the EtherFLOP proof system and earn rewards. TEE or ZK environments protect user input privacy.</p>
+
+  <h3>5.2 Optimization Market</h3>
+  <p>Tasks include quantization, knowledge distillation, and LoRA fine-tuning. Users specify source model and optimization targets. The oracle committee calibrates expected computation. Nodes complete optimization, output the optimized model CID plus work proof, and earn ETHER upon verification.</p>
+
+  <h2>6. Application: Decentralized Model Distillation</h2>
+
+  <h3>6.1 Problem Statement</h3>
+  <p>State-of-the-art closed-source models are only available through restricted APIs, blocked by geography and nationality. Knowledge belongs to all of humanity and should not be monopolized by a few entities.</p>
+
+  <h3>6.2 Distillation Protocol</h3>
+  <p>The Ethercoin distillation protocol runs on top of the compute network, implementing a complete "extract-verify-aggregate-open" pipeline:</p>
+  <ul>
+    <li><strong>Distillation miners:</strong> Stake ETHER, claim prompt batches, call closed-source APIs through the distributed proxy network, generate prompt-response pairs, upload to IPFS, and submit commitments.</li>
+    <li><strong>Proxy account network:</strong> Global participants share closed-source model subscriptions, running proxy nodes and earning ETHER for forwarding. Multi-hop routing makes requests untraceable to the target server.</li>
+    <li><strong>Verifiers:</strong> Randomly re-sample submitted data through independent proxy paths, compare semantic similarity. Verified data earns rewards; fraudulent data results in slashed stakes.</li>
+    <li><strong>Open datasets:</strong> Verified distillation data is published under CC-BY-SA / CC0 licenses.</li>
+  </ul>
+  <p>Distillation workload is measured in <strong>valid data points</strong>, counted only if they pass the verifier's semantic similarity check, preventing garbage submissions.</p>
+
+  <h3>6.3 From Data to Models</h3>
+  <p>When sufficient distillation data accumulates, anyone can initiate a training task, paying ETHER to use the Ethercoin compute network for distributed training. Every training step produces verifiable computation proofs (gradient hashes, checkpoint attestations). The final output is a fully open-source model that can be registered on the inference market, with revenue flowing back to the distillation ecosystem.</p>
+
+  <h2>7. Anti-Cheat System</h2>
+  <p>Ethercoin systematically prevents attacks:</p>
+  <ul>
+    <li><strong>Sybil attacks:</strong> High staking requirements and reputation accumulation make fake identities uneconomical.</li>
+    <li><strong>Fake compute reports:</strong> Optimistic anchor checks make cheating success decay exponentially with each check. ZK proofs and TEE eliminate false computation entirely.</li>
+    <li><strong>Model spoofing:</strong> Submitted weight hashes must match the on-chain model CID. Intermediate activation spot checks expose model architecture mismatches.</li>
+    <li><strong>Buyer-seller collusion:</strong> Verifiers are randomly selected by the contract and face their own slashing risk. Collusion failure probability rises exponentially with verifier count.</li>
+    <li><strong>Distillation cheating:</strong> Independent proxy path reproduction and path signatures detect forged API responses. Cheating proxies are slashed.</li>
+  </ul>
+
+  <h2>8. Roadmap</h2>
+
+  <h3>Phase 1: Genesis (2026 Q3&ndash;Q4)</h3>
+  <ul>
+    <li>Ethercoin mainnet launch supporting inference tasks and mining</li>
+    <li>Deploy ETHER token, staking contracts, and layered verification framework</li>
+    <li>Launch distillation protocol beta</li>
+  </ul>
+
+  <h3>Phase 2: Expansion (2027)</h3>
+  <ul>
+    <li>ZK proof verification integration for enhanced security and privacy</li>
+    <li>Model optimization market launch</li>
+    <li>Distillation network at full capacity, dataset reaching 1B+ tokens</li>
+    <li>Community governance activation</li>
+  </ul>
+
+  <h3>Phase 3: Prosperity (2028+)</h3>
+  <ul>
+    <li>Fully decentralized governance, team authority transferred to DAO</li>
+    <li>Distilled models rivaling top closed-source models</li>
+    <li>Self-sustaining compute-distillation-open-source-service revenue loop</li>
+  </ul>
+
+  <h2>9. Team &amp; Community</h2>
+  <p>Ethercoin is built by a distributed team of AI researchers, distributed systems engineers, and cryptographers from around the world. Core contributors drive early development, with governance progressively handed over. The project has no legal entity, exists as a DAO, and the website ethercoin.org is the sole official information source.</p>
+
+  <h2>10. Conclusion</h2>
+  <p>Ethercoin is more than a blockchain project. It is a movement: using a decentralized compute network to break AI monopolies; replacing wasteful energy consumption with verifiable useful computation; using economic forces to extract and release knowledge imprisoned behind closed-source walls. When ETHER flows between countless nodes, when GPUs around the world compute together, when anonymous individuals collaborate on distillation&mdash;an unshutdownable global AI infrastructure is born.</p>
+  <blockquote><strong>Knowledge belongs to all of humanity. So does compute.</strong></blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/">Back to Ethercoin.org</a></p>
+</div>
+</body>
+</html>

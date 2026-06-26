@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin 黄皮书 — 技术规范</title>
+<meta name="description" content="Ethercoin 技术黄皮书：去中心化 AI 计算与蒸馏协议规范。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 860px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 860px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+h4 { font-size: 17px; font-weight: 600; margin: 22px 0 8px; color: #333; }
+p { margin-bottom: 16px; font-size: 15px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 15px; color: #333; }
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #f4f4fa; padding: 2px 6px; border-radius: 4px;
+  font-size: 13px;
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1a1a2e; color: #d4d4e8;
+  padding: 20px; border-radius: 10px; margin: 20px 0;
+  font-size: 13px; line-height: 1.6; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #00d4aa; background: #f0fdf8;
+  padding: 16px 20px; margin: 20px 0; font-size: 15px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+  pre { font-size: 12px; padding: 14px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/zh/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/zh/">&#8592; 返回首页</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Technical Yellowpaper — Ethercoin 技术黄皮书</p>
+  <h1>去中心化 AI 计算与蒸馏协议</h1>
+  <p class="meta">Version 2.0 &mdash; 2026年6月 &middot; 代币: ETHER &middot; <a href="/zh/whitepaper/">白皮书</a></p>
+
+  <h2>1. 引言</h2>
+  <p>本黄皮书定义了 Ethercoin 去中心化 AI 计算网络的技术架构。该网络提供了一个去中心化、抗审查、可验证的通用 AI 推理、模型优化和知识蒸馏执行环境。</p>
+  <p>核心挑战：<strong>如何在不信任任何单一方的情况下精确衡量异构"有用计算"，同时系统性防止作弊</strong>。本文档详细阐述了 EtherFLOP 衡量标准、分层验证框架、反作弊算法以及完整的蒸馏协议规范。</p>
+
+  <h2>2. 系统概述</h2>
+  <p>Ethercoin 采用分层架构：</p>
+  <pre>+---------------------------------------------------+
+|              Application Layer                     |
+|   +-----------+ +------------+ +----------------+ |
+|   | Inference | |Optimization| |  Distillation   | |
+|   +-----------+ +------------+ +----------------+ |
++---------------------------------------------------+
+|         Market &amp; Consensus Layer                   |
+|   +--------------------------------------------+  |
+|   |Task Matching|Verification|Settlement/Slashing| |
+|   +--------------------------------------------+  |
++---------------------------------------------------+
+|            Execution Layer                         |
+|   +----------+ +----------+ +------------------+  |
+|   |GPU Nodes | |Proxies   | |  Verifiers       |  |
+|   +----------+ +----------+ +------------------+  |
++---------------------------------------------------+
+|         DA &amp; Storage Layer                         |
+|         IPFS / Filecoin / On-chain Events          |
++---------------------------------------------------+</pre>
+  <p><strong>链上：</strong>Ethercoin 原生链（兼容 EVM）上的智能合约。</p>
+  <p><strong>链下：</strong>节点客户端、调度服务、分布式代理网络、通过 P2P 通信的 GPU 执行环境。</p>
+
+  <h2>3. EtherFLOP：衡量系统</h2>
+
+  <h3>3.1 单位定义</h3>
+  <p><strong>EtherFLOP（EFLOP）</strong> = 10<sup>15</sup> 次浮点运算。基准模型：一个标准化的冻结 <strong>LLaMA-7B</strong> 执行一次前向传播（输入 = 1 个 token，输出 logits = 词汇表大小）。理论 FLOPs = 2 &times; 参数数量 &times; 序列长度，公开计算且可独立审计。</p>
+
+  <h3>3.2 任务工作量估算</h3>
+  <p>对于任何提交的模型 M（由 IPFS CID 标识）和输入形状（batch, seq_len），链下调度器解析计算图并计算理论 FLOPs 值 F<sub>theoretical</sub>。该值由<strong>预言机委员会</strong>（多个质押 ETHER 的独立节点，BFT 共识）签名，并写入任务合约的 <code>expectedEFLOPS</code> 字段。估算误差必须保持在 &plusmn;5% 以内，由社区治理校准。</p>
+
+  <h3>3.3 供应端证明</h3>
+  <p>节点提交 <code>WorkProof</code>：</p>
+  <pre>WorkProof {
+    outputCID: bytes32,
+    anchorHashes: bytes32[],  // Optimistic mode: random layer activations
+    zkProof: bytes,           // ZK mode: zk-SNARK proof
+    teeAttestation: bytes     // TEE mode: remote attestation report
+}</pre>
+
+  <h4>3.3.1 乐观验证</h4>
+  <p><strong>随机锚点生成：</strong>链上 VRF 在任务创建时生成 k 个随机层索引（l<sub>1</sub>, ..., l<sub>k</sub>）及相应的随机输入种子。节点提供这些层的激活哈希值。</p>
+  <p><strong>验证者抽查：</strong>随机选择的验证者从 IPFS 下载模型和输入，重新执行指定层并比较哈希值。如果所有 k 个锚点都匹配，则计算被接受。跳过 f 比例计算的作弊者，其被检测概率为 1 - (1-f)<sup>k</sup>，随 k 呈指数级趋近于 1。</p>
+  <p><strong>二元挑战：</strong>如果验证者发现锚点不匹配，则发起链上交互式二元游戏。双方迭代地将争议缩小到单个操作。合约以恒定 gas 成本执行该单步操作，判定获胜者。</p>
+
+  <h4>3.3.2 零知识证明</h4>
+  <p>节点使用 ZK 编译器（例如 zkLLVM 或自定义电路）将模型推理转换为 R1CS/AIR 约束系统，并生成 zk-SNARK 证明。合约验证证明的有效性。电路大小 C 与理论 FLOPs 具有固定的比例关系（系数 &alpha; 由治理设定）。已验证 EFLOPs = C &times; &alpha;。</p>
+
+  <h4>3.3.3 TEE 证明</h4>
+  <p>节点在 Intel SGX / AMD SEV 安全区内执行推理，生成包含代码哈希、输入哈希、输出哈希和硬件可信执行时间的远程证明报告。合约根据 Intel/AMD 链上公钥验证报告签名，并使用 TEE 内 GPU 性能模型将执行时间转换为等效 EFLOPs。</p>
+
+  <h3>3.4 需求端衡量</h3>
+  <p>用户支付 = <code>expectedEFLOPS</code> &times; 当前市场 EFLOP 价格（通过链上订单簿发现）。挑战质押金额与任务价值成比例。如果仲裁判定挑战无效，质押金将被罚没并归节点所有。</p>
+
+  <h2>4. 计算市场协议</h2>
+
+  <h3>4.1 节点注册</h3>
+  <p>调用 <code>NodeRegistry.register(nodeType, hardwareProof, stakeAmount)</code>。硬件证明通过 TEE 自我证明报告或第三方基准测试结果提交；伪证将被罚没。链上<strong>声誉</strong>根据任务完成率、正确率和平均响应时间计算，影响任务分配权重。</p>
+
+  <h3>4.2 任务生命周期（推理）</h3>
+  <ol>
+    <li><strong>提交：</strong>用户调用 <code>TaskMarket.createTask(modelCID, inputCID, expectedEFLOPS, verificationMode, reward)</code>，锁定 ETHER。</li>
+    <li><strong>匹配：</strong>链下匹配引擎监听事件，根据声誉和定价提名节点集。合约使用 VRF 选择节点，防止定向合谋。</li>
+    <li><strong>执行并提交：</strong>节点生成 <code>WorkProof</code> 并提交。</li>
+    <li><strong>验证：</strong>验证遵循所选模式。在乐观模式下，验证者可在挑战期内提交挑战。</li>
+    <li><strong>结算：</strong>挑战期过后（ZK/TEE 模式为立即结算），分发奖励，并对作弊行为触发惩罚。</li>
+  </ol>
+
+  <h3>4.3 反作弊矩阵</h3>
+  <table>
+    <tr><th>攻击类型</th><th>防御手段</th><th>实现方式</th></tr>
+    <tr><td>女巫攻击</td><td>质押 + 声誉</td><td>新节点任务上限 = f(质押量, 历史声誉)</td></tr>
+    <tr><td>虚假计算</td><td>分层验证</td><td>乐观锚点 / ZK 证明 / TEE 证明</td></tr>
+    <tr><td>模型欺骗</td><td>权重哈希白名单 + 锚点检查</td><td><code>modelCID</code> 必须在链上；不同模型架构产生不同的激活分布</td></tr>
+    <tr><td>买卖双方合谋</td><td>随机验证者选择 + 验证者质押</td><td>VRF 选择验证者；验证者质押与矿工质押相匹配</td></tr>
+    <tr><td>梯度欺诈</td><td>检查点评估 + 优化器状态哈希</td><td>验证者在测试集上运行推理；无指标提升 = 罚没</td></tr>
+    <tr><td>蒸馏伪造</td><td>独立路径复现 + 代理签名</td><td>验证者通过不同代理路径获取响应；语义相似度比较</td></tr>
+    <tr><td>代理篡改</td><td>路径签名 + 异常检测</td><td>每跳对载荷哈希链签名；异常惩罚中间跳</td></tr>
+  </table>
+
+  <h2>5. 推理与优化技术规范</h2>
+
+  <h3>5.1 推理 ABI</h3>
+  <p>标准 EIABI：</p>
+  <pre>{
+  "model_cid": "bafy...",
+  "input": {"prompt": "...", "max_tokens": 256, "temperature": 0.7},
+  "expectedEFLOPS": 1500,
+  "verificationMode": "optimistic" | "zk" | "tee"
+}</pre>
+
+  <h3>5.2 优化任务</h3>
+  <p>任务输出优化后的模型 CID 及工作证明（包括量化误差报告或微调权重增量哈希）。验证者重现优化过程并比较结果。</p>
+
+  <h2>6. 蒸馏协议</h2>
+
+  <h3>6.1 设计目标</h3>
+  <p>从闭源 API 中提取知识，流程可验证且抗审查。工作量以"有效数据点"衡量。</p>
+
+  <h3>6.2 核心合约：<code>DistillationMarket</code></h3>
+  <ul>
+    <li><code>createTask(targetModel, reward, promptTreeRoot)</code>：创建者锁定 ETHER。</li>
+    <li><code>claimBatch(taskID, stake)</code>：矿工质押 ETHER，认领一个提示批次。</li>
+    <li><code>submitBatch(taskID, batchID, dataCID, responseHash, proxyPathSigs)</code>：提交结果和代理路由签名。</li>
+    <li><code>challengeBatch(taskID, batchID, proof)</code>：验证者提交挑战。</li>
+    <li><code>finalizeBatch(taskID, batchID)</code>：结算。</li>
+  </ul>
+
+  <h3>6.3 提示分发</h3>
+  <p>DAO 维护一个主题树，其根存储在合约中。矿工通过 VRF 接收叶子哈希和 Merkle 路径，并从 IPFS 链下获取明文提示。</p>
+
+  <h3>6.4 代理网络与路径签名</h3>
+  <p>代理节点注册公钥并质押 ETHER。矿工构建洋葱加密的多跳路径；每跳解密下一跳地址并转发。响应携带路径签名链：<code>Sign<sub>N<sub>k</sub></sub>(...Sign<sub>N<sub>2</sub></sub>(Sign<sub>N<sub>1</sub></sub>(responseHash)))</code>。合约验证路径完整性。</p>
+
+  <h3>6.5 验证与衡量</h3>
+  <p><strong>语义验证：</strong>验证者通过<strong>完全不同的代理路径</strong>获取相同提示的响应，并使用公共嵌入模型计算余弦相似度。超过阈值 &theta;（例如 0.92）的相似度计为一个有效数据点。</p>
+  <p><strong>衡量：</strong>矿工奖励 = 已验证数据点 &times; 单位数据点价格。无效数据点奖励为零并降低声誉。</p>
+
+  <h3>6.6 仲裁</h3>
+  <p>争议由仲裁合约处理。多个仲裁人（高质押验证者）独立判断并投票。多数决定获胜。</p>
+
+  <h2>7. 分布式训练集成</h2>
+  <p>训练任务纳入 EtherFLOP 框架。用户指定基础模型 CID、数据集 CID 和训练配置。<code>expectedEFLOPS</code> 由总优化步数 &times; 每步 FLOPs 计算得出。</p>
+  <p>节点提交周期性检查点哈希值和梯度范数中间值。验证者重新运行随机检查点以确认真实执行。训练完成后，验证者在公开测试集上评估模型性能。未达到改进目标将导致部分质押罚没。</p>
+
+  <h2>8. 安全与隐私</h2>
+  <ul>
+    <li><strong>衡量安全：</strong>锚点模型和预言机委员会使 EFLOPs 不可操纵。ZK 证明提供无需信任的衡量。</li>
+    <li><strong>女巫防御：</strong>高质押要求和随声誉扩展的任务限额。</li>
+    <li><strong>隐私：</strong>推理输入在 TEE 内部解密。蒸馏提示通过代理网络进行洋葱加密。</li>
+    <li><strong>抗审查：</strong>所有合约不可升级或由 DAO 控制。代理网络使用 libp2p noise 加密实现去中心化。</li>
+  </ul>
+
+  <h2>9. 经济参数</h2>
+  <table>
+    <tr><th>参数</th><th>初始值</th><th>描述</th></tr>
+    <tr><td><code>EFLOP_BASELINE_MODEL</code></td><td>Qm... (LLaMA-7B)</td><td>基准模型 CID</td></tr>
+    <tr><td><code>OPTIMISTIC_ANCHORS_DEFAULT</code></td><td>5</td><td>默认抽查锚点数量</td></tr>
+    <tr><td><code>ZK_PROOF_ALPHA</code></td><td>1.2</td><td>FLOPs 与电路大小转换系数</td></tr>
+    <tr><td><code>MIN_STAKE_MINING</code></td><td>1000 ETHER</td><td>最低矿工质押量</td></tr>
+    <tr><td><code>MIN_STAKE_DISTILL</code></td><td>100 ETHER</td><td>最低蒸馏矿工质押量</td></tr>
+    <tr><td><code>CHALLENGE_PERIOD</code></td><td>604800 s</td><td>挑战期（7 天）</td></tr>
+    <tr><td><code>VALIDATOR_FEE_RATIO</code></td><td>5%</td><td>验证者费用比例</td></tr>
+    <tr><td><code>SLASH_RATIO</code></td><td>50%</td><td>作弊惩罚比例</td></tr>
+    <tr><td><code>SIMILARITY_THRESHOLD</code></td><td>0.92</td><td>蒸馏质量阈值</td></tr>
+  </table>
+  <p>所有参数硬编码在系统合约中。DAO 可通过提案修改（受范围限制和时间锁约束）。</p>
+
+  <h2>10. 结论</h2>
+  <p>Ethercoin 的技术架构以<strong>有用计算的可验证衡量</strong>为核心。通过 EtherFLOP 单位、分层证明、随机锚点、ZK/TEE 验证以及全面的反作弊矩阵，该网络能够在不可信环境中实现公平安全的 AI 计算交易。蒸馏协议将此计算市场扩展为知识解放的工具。</p>
+  <blockquote>网站：<strong>https://ethercoin.org</strong> &middot; 白皮书和代码仓库将在同一域名下提供。</blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/zh/">返回 Ethercoin.org</a></p>
+</div>
+</body>
+</html>

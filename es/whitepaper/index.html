@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin Whitepaper — Red Descentralizada de Cómputo de IA</title>
+<meta name="description" content="Whitepaper de Ethercoin: inferencia de IA descentralizada, optimización y red de destilación de conocimiento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 820px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 820px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+p { margin-bottom: 16px; font-size: 16px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 16px; color: #333; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #6c63ff; background: #f8f6ff;
+  padding: 16px 20px; margin: 20px 0; font-size: 16px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/es/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/es/">&#8592; Volver a Inicio</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Whitepaper</p>
+  <h1>Red Descentralizada de Cómputo de IA<br>para Inferencia y Optimización</h1>
+  <p class="meta">Versión 1.0 &mdash; Enero 2025 &middot; Token: ETHER &middot; <a href="/es/yellowpaper/">Yellowpaper</a></p>
+
+  <h2>Resumen</h2>
+  <p>La inteligencia artificial está transformando el mundo, pero los recursos de inferencia y optimización de IA de alto rendimiento están altamente centralizados. Un puñado de proveedores de nube y vendedores de modelos de código cerrado controlan la potencia de cómputo, el acceso a los modelos y los precios. Las restricciones geográficas y la censura excluyen a grandes poblaciones del acceso a la IA avanzada.</p>
+  <p>Ethercoin es una <strong>red descentralizada de cómputo de IA</strong> que proporciona servicios de inferencia y optimización sin permisos a través de nodos GPU distribuidos globalmente. La innovación central de la red es la <strong>medición verificable del cómputo útil</strong>, asegurando que cada contribución sea cuantificada con precisión y recompensada justamente, mientras se elimina el consumo derrochador de energía de la prueba de trabajo tradicional. La red utiliza el token nativo <strong>ETHER</strong> como medio universal para pagos de cómputo e incentivos.</p>
+  <p>Sobre el mercado central de cómputo, Ethercoin introduce el <strong>Protocolo Descentralizado de Destilación de Modelos</strong>, permitiendo que las comunidades extraigan conocimiento de manera colaborativa de modelos de código cerrado y lo transformen en modelos y conjuntos de datos completamente abiertos y de alta calidad&mdash;rompiendo los monopolios de conocimiento para siempre.</p>
+  <p>El objetivo de Ethercoin: convertirse en la <strong>infraestructura pública de cómputo y conocimiento de la era de la IA</strong>.</p>
+
+  <h2>1. Introducción</h2>
+  <p>El mercado actual de cómputo de IA enfrenta un triple dilema:</p>
+  <ol>
+    <li><strong>Monopolio de cómputo:</strong> Los grandes clústeres de GPU están concentrados en unos pocos proveedores de nube con precios opacos y términos cambiantes.</li>
+    <li><strong>Modelos cerrados y restricciones de acceso:</strong> Los modelos de última generación solo están disponibles a través de APIs controladas, bloqueadas por geografía, nacionalidad e identidad.</li>
+    <li><strong>Acaparamiento de conocimiento:</strong> Los modelos de código cerrado aprenden de datos públicos pero blindan su producción, traicionando a la internet abierta.</li>
+  </ol>
+  <p>La solución de Ethercoin: una capa de incentivos criptoeconómicos que construye una <strong>red de cómputo abierta y sin confianza</strong>. Cualquier persona con una GPU puede contribuir y ganar ETHER. Cualquier persona con ETHER puede usar servicios de inferencia y optimización de IA sin discriminación. La red establece un sistema preciso para medir el cómputo útil y prevenir sistemáticamente el engaño, creando un mercado justo y seguro.</p>
+
+  <h2>2. Arquitectura de la Red</h2>
+  <h3>2.1 Capa de Recursos de Cómputo</h3>
+  <p><strong>Mineros:</strong> Cualquier entidad que conecte una GPU a la red. Los nodos ejecutan el cliente de Ethercoin, reciben automáticamente tareas de inferencia u optimización, y ganan recompensas en ETHER al completarlas.</p>
+  <p><strong>Tipos de cómputo:</strong> Inicialmente centrados en inferencia y optimización de modelos de IA (cuantización, destilación, ajuste fino), expandiéndose a cómputo general en el futuro.</p>
+  <p><strong>Diversidad de nodos:</strong> Desde máquinas domésticas con una sola GPU hasta clústeres de centros de datos profesionales. La red asigna tareas según el nivel de cómputo y la reputación.</p>
+
+  <h3>2.2 Capa de Mercado y Planificación</h3>
+  <p><strong>Creadores de tareas:</strong> Usuarios que necesitan inferencia u optimización de IA. Envían descripciones de tareas y bloquean ETHER como pago.</p>
+  <p><strong>Planificador descentralizado:</strong> Contratos inteligentes en cadena combinados con motores de emparejamiento fuera de cadena asignan tareas a conjuntos óptimos de nodos según reputación, precio de cómputo y latencia.</p>
+  <p><strong>Verificación y liquidación:</strong> Una combinación en capas de verificación optimista, pruebas de conocimiento cero y entornos de ejecución confiables asegura la corrección. Los nodos depositan ETHER como garantía de buena fe.</p>
+
+  <h3>2.3 Capa de Protocolo de Aplicación</h3>
+  <p>Interfaces abiertas permiten que cualquier persona construya aplicaciones descentralizadas de IA sobre Ethercoin. La primera aplicación central es el <strong>Protocolo de Destilación</strong>, aprovechando la potencia de cómputo global de la red y los incentivos de tokens para transformar el conocimiento de código cerrado en modelos abiertos.</p>
+
+  <h2>3. Midiendo el Cómputo Útil: EtherFLOP y EtherScore</h2>
+  <p>La minería tradicional de criptomonedas prueba el trabajo a través de colisiones de hash&mdash;cómputo sin uso práctico. El avance de Ethercoin: <strong>demostrar que la potencia de cómputo de IA se usa genuinamente para inferencia u optimización valiosa, y medir precisamente esa contribución</strong>.</p>
+
+  <h3>3.1 Unidad: EtherFLOP</h3>
+  <p><strong>EtherFLOP (EFLOP)</strong> = 10<sup>15</sup> operaciones de punto flotante (1 PetaFLOP). Esta unidad está anclada a un <strong>modelo de referencia estándar</strong> público e inmutable (por ejemplo, una versión fija de LLaMA-7B ejecutando un paso forward completo). Cualquier persona puede reproducir y verificar el cómputo de forma independiente.</p>
+
+  <h3>3.2 Estimación de Complejidad de Tareas</h3>
+  <p>Cuando un usuario envía una tarea, el sistema deriva automáticamente la carga de trabajo esperada (W<sub>expected</sub>) en EFLOPs a partir del grafo de cómputo del modelo. Esta estimación es confirmada por un comité oráculo (multifirma) y registrada en el contrato inteligente como línea base para pago y verificación.</p>
+
+  <h3>3.3 Pruebas del Lado de la Oferta</h3>
+  <p>Después de completar el cómputo, el nodo envía una <strong>prueba de finalización de trabajo</strong>. El enfoque estratificado se adapta al valor de la tarea:</p>
+  <ul>
+    <li><strong>Verificación optimista:</strong> El nodo envía el hash de salida más hashes aleatorios de activaciones de capas intermedias (anclas de verificación aleatoria). Los verificadores revisan anclas aleatoriamente. El cómputo honesto se confirma si todo coincide.</li>
+    <li><strong>Pruebas de conocimiento cero:</strong> El nodo genera un zk-SNARK que prueba que la inferencia completa fue ejecutada en el modelo y entrada especificados. El contrato en cadena verifica esta prueba, confirmando la cantidad y corrección del cómputo.</li>
+    <li><strong>Atestaciones TEE:</strong> Para tareas sensibles a la privacidad, el cómputo se ejecuta dentro de enclaves de seguridad de hardware (Intel SGX / AMD SEV). Reportes de atestación remota, incluyendo tiempo de ejecución mapeado a EFLOPs mediante el modelo de rendimiento GPU-en-TEE.</li>
+  </ul>
+
+  <h3>3.4 Anticorrupción del Lado de la Demanda</h3>
+  <p>Para prevenir el engaño del lado de la demanda (por ejemplo, crear tareas vacías y negar maliciosamente el pago), la recompensa completa en ETHER se bloquea al crear la tarea. Los desafiadores también deben depositar. Si el desafío se considera inválido, el depósito se pierde y se paga al nodo&mdash;un juego simétrico que asegura la equidad del mercado.</p>
+
+  <h2>4. Economía del Token ETHER</h2>
+
+  <h3>4.1 Funciones del Token</h3>
+  <table>
+    <tr><th>Función</th><th>Descripción</th></tr>
+    <tr><td>Pago de cómputo</td><td>Todas las tareas de inferencia, optimización y entrenamiento se pagan en ETHER</td></tr>
+    <tr><td>Recompensas de minería</td><td>Los nodos ganan ETHER por cómputo útil verificable</td></tr>
+    <tr><td>Depósitos y seguridad</td><td>Nodos y verificadores depositan ETHER; las malas prácticas son penalizadas</td></tr>
+    <tr><td>Gobernanza</td><td>Los tenedores de ETHER participan en la votación de parámetros del protocolo</td></tr>
+    <tr><td>Incentivos de destilación</td><td>Mineros, verificadores y operadores de proxy ganan ETHER</td></tr>
+  </table>
+
+  <h3>4.2 Suministro y Emisión</h3>
+  <p><strong>Suministro máximo:</strong> 21 billones de ETHER</p>
+  <p><strong>Génesis:</strong> 90% para contribuyentes iniciales, fondo de desarrollo y construcción comunitaria (bloqueado con calendario de adquisición de derechos)</p>
+  <p><strong>Minería:</strong> El 10% restante se libera en ~10 años (~1% anual) mediante minería de cómputo y destilación. Las recompensas por bloque disminuyen con el tiempo. Las recompensas son directamente proporcionales a la contribución en EFLOP. Al concluir la emisión por minería, la comunidad votará si se mantiene un incentivo perpetuo del 0.1% anual para sostener la red.</p>
+  <p><strong>Quema:</strong> Una parte de las tarifas y los fondos penalizados se quema periódicamente, creando valor a largo plazo.</p>
+
+  <h3>4.3 Volante Económico</h3>
+  <p>Demanda creciente de cómputo &rarr; demanda creciente de ETHER &rarr; mayores ingresos para mineros &rarr; más nodos se unen &rarr; red de cómputo más fuerte &rarr; mejor servicio &rarr; más demanda. El protocolo de destilación inyecta escenarios adicionales de consumo e incentivos de ETHER. El estándar EtherFLOP hace que todas las contribuciones sean conmensurables, alineando precisamente los incentivos con el trabajo real.</p>
+
+  <h2>5. Aplicación: Inferencia y Optimización Descentralizada de IA</h2>
+
+  <h3>5.1 Mercado de Inferencia</h3>
+  <p>Los publicadores de modelos suben modelos optimizados a IPFS/Filecoin y registran servicios de inferencia en Ethercoin. Los usuarios envían solicitudes de inferencia, pagan ETHER, y la red planifica la asignación al mejor nodo. Los nodos prueban el cómputo mediante el sistema de pruebas EtherFLOP y ganan recompensas. Los entornos TEE o ZK protegen la privacidad de la entrada del usuario.</p>
+
+  <h3>5.2 Mercado de Optimización</h3>
+  <p>Las tareas incluyen cuantización, destilación de conocimiento y ajuste fino LoRA. Los usuarios especifican el modelo fuente y los objetivos de optimización. El comité oráculo calibra el cómputo esperado. Los nodos completan la optimización, producen el CID del modelo optimizado más la prueba de trabajo, y ganan ETHER tras la verificación.</p>
+
+  <h2>6. Aplicación: Destilación Descentralizada de Modelos</h2>
+
+  <h3>6.1 Planteamiento del Problema</h3>
+  <p>Los modelos de código cerrado de última generación solo están disponibles a través de APIs restringidas, bloqueadas por geografía y nacionalidad. El conocimiento pertenece a toda la humanidad y no debería ser monopolizado por unas pocas entidades.</p>
+
+  <h3>6.2 Protocolo de Destilación</h3>
+  <p>El protocolo de destilación de Ethercoin se ejecuta sobre la red de cómputo, implementando un pipeline completo de "extraer-verificar-agregar-abrir":</p>
+  <ul>
+    <li><strong>Mineros de destilación:</strong> Depositan ETHER, reclaman lotes de prompts, llaman a APIs de código cerrado a través de la red de proxy distribuida, generan pares prompt-respuesta, los suben a IPFS y envían compromisos.</li>
+    <li><strong>Red de cuentas proxy:</strong> Participantes globales comparten suscripciones a modelos de código cerrado, ejecutan nodos proxy y ganan ETHER por reenviar solicitudes. El enrutamiento multi-salto hace que las solicitudes sean imposibles de rastrear hasta el servidor objetivo.</li>
+    <li><strong>Verificadores:</strong> Remuestrean aleatoriamente los datos enviados a través de rutas proxy independientes, comparan similitud semántica. Los datos verificados ganan recompensas; los datos fraudulentos resultan en depósitos penalizados.</li>
+    <li><strong>Conjuntos de datos abiertos:</strong> Los datos de destilación verificados se publican bajo licencias CC-BY-SA / CC0.</li>
+  </ul>
+  <p>La carga de trabajo de destilación se mide en <strong>puntos de datos válidos</strong>, contados solo si pasan la verificación de similitud semántica del verificador, evitando envíos basura.</p>
+
+  <h3>6.3 De Datos a Modelos</h3>
+  <p>Cuando se acumulan suficientes datos de destilación, cualquier persona puede iniciar una tarea de entrenamiento, pagando ETHER para usar la red de cómputo de Ethercoin para entrenamiento distribuido. Cada paso de entrenamiento produce pruebas de cómputo verificables (hashes de gradientes, atestaciones de checkpoint). El resultado final es un modelo completamente open source que puede registrarse en el mercado de inferencia, con ingresos que fluyen de vuelta al ecosistema de destilación.</p>
+
+  <h2>7. Sistema Anticorrupción</h2>
+  <p>Ethercoin previene ataques sistemáticamente:</p>
+  <ul>
+    <li><strong>Ataques Sybil:</strong> Altos requisitos de depósito y acumulación de reputación hacen que las identidades falsas no sean económicas.</li>
+    <li><strong>Reportes de cómputo falsos:</strong> Las verificaciones optimistas de anclas hacen que la probabilidad de éxito del engaño decaiga exponencialmente con cada verificación. Las pruebas ZK y TEE eliminan el cómputo falso por completo.</li>
+    <li><strong>Suplantación de modelos:</strong> Los hashes de pesos enviados deben coincidir con el CID del modelo en cadena. Las verificaciones aleatorias de activaciones intermedias exponen discrepancias en la arquitectura del modelo.</li>
+    <li><strong>Colusión comprador-vendedor:</strong> Los verificadores son seleccionados aleatoriamente por el contrato y enfrentan su propio riesgo de penalización. La probabilidad de éxito de colusión crece exponencialmente con el número de verificadores.</li>
+    <li><strong>Engaño en destilación:</strong> La reproducción mediante rutas proxy independientes y las firmas de ruta detectan respuestas falsificadas de la API. Los proxies que engañan son penalizados.</li>
+  </ul>
+
+  <h2>8. Hoja de Ruta</h2>
+
+  <h3>Fase 1: Génesis (Q3&ndash;Q4 2026)</h3>
+  <ul>
+    <li>Lanzamiento de la red principal de Ethercoin compatible con tareas de inferencia y minería</li>
+    <li>Despliegue del token ETHER, contratos de depósito y marco de verificación en capas</li>
+    <li>Lanzamiento beta del protocolo de destilación</li>
+  </ul>
+
+  <h3>Fase 2: Expansión (2027)</h3>
+  <ul>
+    <li>Integración de verificación con pruebas ZK para mayor seguridad y privacidad</li>
+    <li>Lanzamiento del mercado de optimización de modelos</li>
+    <li>Red de destilación a plena capacidad, conjunto de datos alcanzando 1B+ tokens</li>
+    <li>Activación de la gobernanza comunitaria</li>
+  </ul>
+
+  <h3>Fase 3: Prosperidad (2028+)</h3>
+  <ul>
+    <li>Gobernanza completamente descentralizada, autoridad del equipo transferida a la DAO</li>
+    <li>Modelos destilados compitiendo con los mejores modelos de código cerrado</li>
+    <li>Ciclo de ingresos autosostenible de cómputo-destilación-código abierto-servicio</li>
+  </ul>
+
+  <h2>9. Equipo y Comunidad</h2>
+  <p>Ethercoin es construido por un equipo distribuido de investigadores de IA, ingenieros de sistemas distribuidos y criptógrafos de todo el mundo. Los contribuyentes principales impulsan el desarrollo temprano, con la gobernanza transferida progresivamente. El proyecto no tiene entidad legal, existe como una DAO, y el sitio web ethercoin.org es la única fuente oficial de información.</p>
+
+  <h2>10. Conclusión</h2>
+  <p>Ethercoin es más que un proyecto blockchain. Es un movimiento: usar una red de cómputo descentralizada para romper los monopolios de IA; reemplazar el consumo derrochador de energía con cómputo útil verificable; usar fuerzas económicas para extraer y liberar conocimiento encerrado tras muros de código cerrado. Cuando ETHER fluye entre innumerables nodos, cuando GPUs de todo el mundo computan juntos, cuando individuos anónimos colaboran en la destilación&mdash;nace una infraestructura global de IA imposible de apagar.</p>
+  <blockquote><strong>El conocimiento pertenece a toda la humanidad. El cómputo también.</strong></blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/es/">Volver a Ethercoin.org</a></p>
+</div>
+</body>
+</html>

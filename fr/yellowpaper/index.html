@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin Livre Jaune — Spécification Technique</title>
+<meta name="description" content="Livre jaune technique d'Ethercoin : spécification du protocole pour le calcul et la distillation IA décentralisés.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 860px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 860px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+h4 { font-size: 17px; font-weight: 600; margin: 22px 0 8px; color: #333; }
+p { margin-bottom: 16px; font-size: 15px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 15px; color: #333; }
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #f4f4fa; padding: 2px 6px; border-radius: 4px;
+  font-size: 13px;
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1a1a2e; color: #d4d4e8;
+  padding: 20px; border-radius: 10px; margin: 20px 0;
+  font-size: 13px; line-height: 1.6; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #00d4aa; background: #f0fdf8;
+  padding: 16px 20px; margin: 20px 0; font-size: 15px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+  pre { font-size: 12px; padding: 14px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/fr/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/fr/">&#8592; Retour à l'accueil</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Technical Yellowpaper — Ethercoin Livre Jaune Technique</p>
+  <h1>Protocole Décentralisé de Calcul IA et de Distillation</h1>
+  <p class="meta">Version 2.0 &mdash; Juin 2026 &middot; Token : ETHER &middot; <a href="/fr/whitepaper/">Livre Blanc</a></p>
+
+  <h2>1. Introduction</h2>
+  <p>Ce livre jaune définit l'architecture technique du réseau de calcul IA décentralisé Ethercoin. Le réseau fournit un environnement d'exécution vérifiable, décentralisé et résistant à la censure pour l'inférence IA générale, l'optimisation de modèles et la distillation de connaissances.</p>
+  <p>Défi central : <strong>comment mesurer précisément un « calcul utile » hétérogène sans faire confiance à une seule partie, tout en empêchant systématiquement la triche</strong>. Ce document détaille la norme de mesure EtherFLOP, le cadre de vérification en couches, les algorithmes anti-triche et la spécification complète du protocole de distillation.</p>
+
+  <h2>2. Vue d'ensemble du Système</h2>
+  <p>Ethercoin utilise une architecture en couches :</p>
+  <pre>+---------------------------------------------------+
+|              Application Layer                     |
+|   +-----------+ +------------+ +----------------+ |
+|   | Inference | |Optimization| |  Distillation   | |
+|   +-----------+ +------------+ +----------------+ |
++---------------------------------------------------+
+|         Market &amp; Consensus Layer                   |
+|   +--------------------------------------------+  |
+|   |Task Matching|Verification|Settlement/Slashing| |
+|   +--------------------------------------------+  |
++---------------------------------------------------+
+|            Execution Layer                         |
+|   +----------+ +----------+ +------------------+  |
+|   |GPU Nodes | |Proxies   |  |  Verifiers       |  |
+|   +----------+ +----------+ +------------------+  |
++---------------------------------------------------+
+|         DA &amp; Storage Layer                         |
+|         IPFS / Filecoin / On-chain Events          |
++---------------------------------------------------+</pre>
+  <p><strong>On-chain :</strong> Contrats intelligents sur la chaîne native Ethercoin (compatible EVM).</p>
+  <p><strong>Off-chain :</strong> Clients nœuds, services d'ordonnancement, réseau de proxies distribué, environnements d'exécution GPU communicant via P2P.</p>
+
+  <h2>3. EtherFLOP : Système de Mesure</h2>
+
+  <h3>3.1 Définition de l'Unité</h3>
+  <p><strong>EtherFLOP (EFLOP)</strong> = 10<sup>15</sup> opérations en virgule flottante. Modèle de référence : un <strong>LLaMA-7B</strong> standardisé et figé exécutant une passe avant (entrée = 1 token, logits de sortie = taille du vocabulaire). FLOPs théoriques = 2 &times; paramètres &times; longueur de séquence, calculés publiquement et auditable indépendamment.</p>
+
+  <h3>3.2 Estimation de la Charge de Travail</h3>
+  <p>Pour tout modèle M soumis (identifié par CID IPFS) et toute forme d'entrée (batch, seq_len), l'ordonnanceur hors chaîne analyse le graphe de calcul et calcule la valeur théorique F<sub>theoretical</sub>. Cette valeur est signée par le <strong>comité d'oracles</strong> (plusieurs nœuds indépendants misant des ETHER, consensus BFT) et écrite dans le champ <code>expectedEFLOPS</code> du contrat de tâche. L'erreur d'estimation doit rester dans &plusmn;5 %, calibrée par la gouvernance communautaire.</p>
+
+  <h3>3.3 Preuves Côté Fournisseur</h3>
+  <p>Les nœuds soumettent un <code>WorkProof</code> :</p>
+  <pre>WorkProof {
+    outputCID: bytes32,
+    anchorHashes: bytes32[],  // Optimistic mode: random layer activations
+    zkProof: bytes,           // ZK mode: zk-SNARK proof
+    teeAttestation: bytes     // TEE mode: remote attestation report
+}</pre>
+
+  <h4>3.3.1 Vérification Optimiste</h4>
+  <p><strong>Génération d'ancres aléatoires :</strong> Un VRF on-chain génère k indices de couches aléatoires (l<sub>1</sub>, ..., l<sub>k</sub>) et des seeds d'entrée aléatoires correspondants lors de la création de la tâche. Les nœuds fournissent les hash d'activation pour ces couches.</p>
+  <p><strong>Vérification ponctuelle :</strong> Des vérificateurs sélectionnés aléatoirement téléchargent le modèle et l'entrée depuis IPFS, réexécutent les couches spécifiées et comparent les hash. Si les k ancres correspondent, le calcul est accepté. Un tricheur sautant une fraction f du calcul a une probabilité de détection de 1 - (1-f)<sup>k</sup>, convergeant vers 1 de manière exponentielle avec k.</p>
+  <p><strong>Défi binaire :</strong> Si un vérificateur détecte une divergence d'ancre, il initie un jeu binaire interactif on-chain. Les deux parties réduisent itérativement le litige à une seule opération. Le contrat exécute cette unique étape pour un coût de gaz constant, déterminant le gagnant.</p>
+
+  <h4>3.3.2 Preuves à Connaissance Nulle</h4>
+  <p>Les nœuds utilisent des compilateurs ZK (ex. zkLLVM ou circuits personnalisés) pour transformer l'inférence du modèle en systèmes de contraintes R1CS/AIR et générer des preuves zk-SNARK. Le contrat vérifie la validité de la preuve. La taille du circuit C a une relation proportionnelle fixe avec les FLOPs théoriques (coefficient &alpha; défini par la gouvernance). EFLOPs vérifiés = C &times; &alpha;.</p>
+
+  <h4>3.3.3 Attestation TEE</h4>
+  <p>Les nœuds exécutent l'inférence dans des enclaves Intel SGX / AMD SEV, générant des rapports d'attestation à distance contenant le hash du code, le hash d'entrée, le hash de sortie et le temps d'exécution certifié par le matériel. Le contrat vérifie les signatures des rapports par rapport aux clés publiques on-chain Intel/AMD et convertit le temps d'exécution en EFLOPs équivalents en utilisant le modèle de performance GPU-dans-TEE.</p>
+
+  <h3>3.4 Mesure Côté Demande</h3>
+  <p>Paiement utilisateur = <code>expectedEFLOPS</code> &times; prix actuel du marché EFLOP (découvert via le carnet d'ordres on-chain). Le stake de défi est proportionnel à la valeur de la tâche. Si l'arbitrage détermine que le défi est invalide, le stake est confisqué au profit du nœud.</p>
+
+  <h2>4. Protocole du Marché de Calcul</h2>
+
+  <h3>4.1 Enregistrement des Nœuds</h3>
+  <p>Appel <code>NodeRegistry.register(nodeType, hardwareProof, stakeAmount)</code>. La preuve matérielle est soumise via un rapport d'auto-attestation TEE ou des résultats de benchmark tiers ; le parjure est sanctionnable. La <strong>réputation</strong> on-chain est calculée à partir du taux d'achèvement des tâches, du ratio de correction et du temps de réponse moyen, affectant le poids d'attribution des tâches.</p>
+
+  <h3>4.2 Cycle de Vie d'une Tâche (Inférence)</h3>
+  <ol>
+    <li><strong>Soumission :</strong> L'utilisateur appelle <code>TaskMarket.createTask(modelCID, inputCID, expectedEFLOPS, verificationMode, reward)</code>, verrouillant des ETHER.</li>
+    <li><strong>Appariement :</strong> Le moteur d'appariement hors chaîne écoute les événements, nomme des ensembles de nœuds basés sur la réputation et le prix. Le contrat utilise le VRF pour sélectionner les nœuds, empêchant la collusion ciblée.</li>
+    <li><strong>Exécution et soumission :</strong> Le nœud génère un <code>WorkProof</code> et le soumet.</li>
+    <li><strong>Vérification :</strong> La vérification suit le mode sélectionné. En mode optimiste, les vérificateurs peuvent soumettre des défis pendant la période de contestation.</li>
+    <li><strong>Règlement :</strong> Après la période de contestation (ou immédiatement pour ZK/TEE), les récompenses sont distribuées et les pénalités déclenchées en cas de triche.</li>
+  </ol>
+
+  <h3>4.3 Matrice Anti-Triche</h3>
+  <table>
+    <tr><th>Attaque</th><th>Défense</th><th>Implémentation</th></tr>
+    <tr><td>Sybil</td><td>Stake + réputation</td><td>Limite de tâches par nouveau nœud = f(stake, réputation historique)</td></tr>
+    <tr><td>Calcul fictif</td><td>Vérification en couches</td><td>Ancres optimistes / preuves ZK / attestations TEE</td></tr>
+    <tr><td>Usurpation de modèle</td><td>Liste blanche de hash de poids + vérifications d'ancres</td><td><code>modelCID</code> doit être on-chain ; des architectures de modèles différentes produisent des distributions d'activation distinctes</td></tr>
+    <tr><td>Collusion acheteur-vendeur</td><td>Sélection aléatoire de vérificateurs + mise des vérificateurs</td><td>VRF sélectionne les vérificateurs ; les mises des vérificateurs correspondent à celles des mineurs</td></tr>
+    <tr><td>Fraude de gradient</td><td>Évaluation par points de contrôle + hash d'état de l'optimiseur</td><td>Les vérificateurs exécutent une inférence sur un ensemble de test ; aucune amélioration de métrique = sanction</td></tr>
+    <tr><td>Falsification de distillation</td><td>Reproduction par chemin indépendant + signatures de proxy</td><td>Les vérificateurs obtiennent des réponses via différents chemins de proxy ; comparaison de similarité sémantique</td></tr>
+    <tr><td>Altération de proxy</td><td>Signatures de chemin + détection d'anomalies</td><td>Chaque saut signe la chaîne de hash de la charge utile ; la divergence pénalise les sauts intermédiaires</td></tr>
+  </table>
+
+  <h2>5. Spécification Technique de l'Inférence et de l'Optimisation</h2>
+
+  <h3>5.1 ABI d'Inférence</h3>
+  <p>EIABI standard :</p>
+  <pre>{
+  "model_cid": "bafy...",
+  "input": {"prompt": "...", "max_tokens": 256, "temperature": 0.7},
+  "expectedEFLOPS": 1500,
+  "verificationMode": "optimistic" | "zk" | "tee"
+}</pre>
+
+  <h3>5.2 Tâches d'Optimisation</h3>
+  <p>Les tâches produisent le CID du modèle optimisé ainsi qu'une preuve de travail (incluant un rapport d'erreur de quantification ou les hash de delta de poids affinés). Les vérificateurs reproduisent l'optimisation et comparent les résultats.</p>
+
+  <h2>6. Protocole de Distillation</h2>
+
+  <h3>6.1 Objectifs de Conception</h3>
+  <p>Extraire la connaissance d'API propriétaires avec des processus vérifiables et anti-censure. Charge de travail mesurée en « points de données valides ».</p>
+
+  <h3>6.2 Contrat Principal : <code>DistillationMarket</code></h3>
+  <ul>
+    <li><code>createTask(targetModel, reward, promptTreeRoot)</code> : Le créateur verrouille des ETHER.</li>
+    <li><code>claimBatch(taskID, stake)</code> : Le mineur mise des ETHER, réclame un lot de prompts.</li>
+    <li><code>submitBatch(taskID, batchID, dataCID, responseHash, proxyPathSigs)</code> : Soumet les résultats et les signatures de route proxy.</li>
+    <li><code>challengeBatch(taskID, batchID, proof)</code> : Le vérificateur soumet un défi.</li>
+    <li><code>finalizeBatch(taskID, batchID)</code> : Règlement.</li>
+  </ul>
+
+  <h3>6.3 Distribution des Prompts</h3>
+  <p>La DAO maintient un arbre thématique dont la racine est stockée dans le contrat. Les mineurs reçoivent les hash de feuilles et les chemins Merkle via VRF, et récupèrent les prompts en texte clair depuis IPFS hors chaîne.</p>
+
+  <h3>6.4 Réseau de Proxies et Signatures de Chemin</h3>
+  <p>Les nœuds proxy enregistrent des clés publiques et misent des ETHER. Les mineurs construisent des chemins multi-sauts chiffrés en oignon ; chaque saut déchiffre l'adresse suivante et transmet. Les réponses portent une chaîne de signature de chemin : <code>Sign<sub>N<sub>k</sub></sub>(...Sign<sub>N<sub>2</sub></sub>(Sign<sub>N<sub>1</sub></sub>(responseHash)))</code>. Le contrat vérifie l'intégrité du chemin.</p>
+
+  <h3>6.5 Vérification et Mesure</h3>
+  <p><strong>Vérification sémantique :</strong> Les vérificateurs récupèrent les réponses pour le même prompt via des <strong>chemins de proxy complètement différents</strong> et calculent la similarité cosinus à l'aide d'un modèle d'embedding public. Une similarité supérieure au seuil &theta; (ex. 0,92) compte comme un point de données valide.</p>
+  <p><strong>Mesure :</strong> Récompense du mineur = points de données vérifiés &times; prix unitaire du point de données. Les points de données invalides ne rapportent aucune récompense et réduisent la réputation.</p>
+
+  <h3>6.6 Arbitrage</h3>
+  <p>Les litiges sont traités par le contrat d'arbitrage. Plusieurs arbitres (vérificateurs à haut stake) jugent et votent indépendamment. La décision majoritaire prévaut.</p>
+
+  <h2>7. Intégration de l'Entraînement Distribué</h2>
+  <p>Les tâches d'entraînement sont intégrées au cadre EtherFLOP. Les utilisateurs spécifient le CID du modèle de base, le CID du jeu de données et la configuration d'entraînement. <code>expectedEFLOPS</code> est calculé à partir du nombre total d'étapes d'optimisation &times; FLOPs par étape.</p>
+  <p>Les nœuds soumettent périodiquement des hash de points de contrôle et des intermédiaires de norme de gradient. Les vérificateurs réexécutent des points de contrôle aléatoires pour confirmer l'exécution réelle. Après l'entraînement, les vérificateurs évaluent la performance du modèle sur un ensemble de test public. L'échec à atteindre les objectifs d'amélioration entraîne une sanction partielle du stake.</p>
+
+  <h2>8. Sécurité et Confidentialité</h2>
+  <ul>
+    <li><strong>Sécurité de la mesure :</strong> Les modèles d'ancrage et les comités d'oracles rendent les EFLOPs non manipulables. Les preuves ZK fournissent une mesure sans confiance.</li>
+    <li><strong>Défense Sybil :</strong> Mises élevées et limites de tâches échelonnées selon la réputation.</li>
+    <li><strong>Confidentialité :</strong> Les entrées d'inférence sont déchiffrées à l'intérieur du TEE. Les prompts de distillation sont chiffrés en oignon via le réseau de proxies.</li>
+    <li><strong>Résistance à la censure :</strong> Tous les contrats sont non-mis à jour ou contrôlés par la DAO. Le réseau de proxies est décentralisé avec chiffrement noise libp2p.</li>
+  </ul>
+
+  <h2>9. Paramètres Économiques</h2>
+  <table>
+    <tr><th>Paramètre</th><th>Valeur Initiale</th><th>Description</th></tr>
+    <tr><td><code>EFLOP_BASELINE_MODEL</code></td><td>Qm... (LLaMA-7B)</td><td>CID du modèle de référence</td></tr>
+    <tr><td><code>OPTIMISTIC_ANCHORS_DEFAULT</code></td><td>5</td><td>Ancres de vérification ponctuelle par défaut</td></tr>
+    <tr><td><code>ZK_PROOF_ALPHA</code></td><td>1.2</td><td>Coefficient FLOPs / taille de circuit</td></tr>
+    <tr><td><code>MIN_STAKE_MINING</code></td><td>1000 ETHER</td><td>Mise minimale du mineur</td></tr>
+    <tr><td><code>MIN_STAKE_DISTILL</code></td><td>100 ETHER</td><td>Mise minimale du mineur de distillation</td></tr>
+    <tr><td><code>CHALLENGE_PERIOD</code></td><td>604800 s</td><td>Période de contestation (7 jours)</td></tr>
+    <tr><td><code>VALIDATOR_FEE_RATIO</code></td><td>5%</td><td>Pourcentage de frais de vérification</td></tr>
+    <tr><td><code>SLASH_RATIO</code></td><td>50%</td><td>Taux de pénalité pour triche</td></tr>
+    <tr><td><code>SIMILARITY_THRESHOLD</code></td><td>0.92</td><td>Seuil de qualité de distillation</td></tr>
+  </table>
+  <p>Tous les paramètres sont codés en dur dans les contrats du système. La DAO peut les modifier via des propositions (avec des limites de portée et des verrous temporels).</p>
+
+  <h2>10. Conclusion</h2>
+  <p>L'architecture technique d'Ethercoin est centrée sur la <strong>mesure vérifiable du calcul utile</strong>. Grâce à l'unité EtherFLOP, aux preuves en couches, aux ancres aléatoires, à la vérification ZK/TEE et à une matrice anti-triche complète, le réseau permet un échange équitable et sécurisé de calcul IA dans un environnement non fiable. Le protocole de distillation étend ce marché de calcul en un outil de libération des connaissances.</p>
+  <blockquote>Site web : <strong>https://ethercoin.org</strong> &middot; Le Livre Blanc et le dépôt de code seront disponibles sur le même domaine.</blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/fr/">Retour à Ethercoin.org</a></p>
+</div>
+</body>
+</html>

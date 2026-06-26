@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethercoin イエローペーパー — 技術仕様</title>
+<meta name="description" content="Ethercoinの技術イエローペーパー：分散型AIコンピューティングと蒸留のプロトコル仕様。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8f9fc; color: #1a1a2e;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,26,46,.95); backdrop-filter: blur(12px);
+  z-index: 1000; border-bottom: 1px solid rgba(108,99,255,.15);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; max-width: 860px; margin: 0 auto; padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+.logo-icon {
+  width: 28px; height: 28px; background: linear-gradient(135deg,#6c63ff,#00d4aa);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; font-weight: 800;
+}
+.header a { color: rgba(255,255,255,.7); font-size: 14px; text-decoration: none; }
+.header a:hover { color: #fff; }
+.content {
+  max-width: 860px; margin: 0 auto; padding: 100px 24px 80px;
+  background: #fff;
+}
+h1 { font-size: 36px; font-weight: 800; margin-bottom: 6px; letter-spacing: -.5px; line-height: 1.2; }
+.subtitle { font-size: 18px; color: #6c63ff; font-weight: 600; margin-bottom: 4px; }
+.meta { font-size: 14px; color: #888; margin-bottom: 40px; }
+h2 { font-size: 26px; font-weight: 700; margin: 40px 0 14px; padding-top: 8px; border-top: 2px solid #f0f0f8; }
+h3 { font-size: 20px; font-weight: 600; margin: 28px 0 10px; }
+h4 { font-size: 17px; font-weight: 600; margin: 22px 0 8px; color: #333; }
+p { margin-bottom: 16px; font-size: 15px; color: #333; }
+strong { color: #1a1a2e; }
+ul, ol { margin: 0 0 20px 24px; }
+li { margin-bottom: 8px; font-size: 15px; color: #333; }
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #f4f4fa; padding: 2px 6px; border-radius: 4px;
+  font-size: 13px;
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1a1a2e; color: #d4d4e8;
+  padding: 20px; border-radius: 10px; margin: 20px 0;
+  font-size: 13px; line-height: 1.6; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th, td { padding: 10px 14px; border: 1px solid #e0e0ec; text-align: left; }
+th { background: #f4f4fa; font-weight: 600; }
+blockquote {
+  border-left: 4px solid #00d4aa; background: #f0fdf8;
+  padding: 16px 20px; margin: 20px 0; font-size: 15px; color: #555;
+  border-radius: 0 8px 8px 0;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .content { padding: 80px 16px 60px; }
+  pre { font-size: 12px; padding: 14px; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="/ja/" class="logo"><img src="/logo.png" alt="Ethercoin" style="height:28px;width:auto"></a>
+    <a href="/ja/">&#8592; ホームに戻る</a>
+  </div>
+</header>
+<div class="content">
+  <p class="subtitle">Ethercoin Technical Yellowpaper — イーサコイン技術イエローペーパー</p>
+  <h1>分散型AIコンピューティング＆蒸留プロトコル</h1>
+  <p class="meta">Version 2.0 &mdash; June 2026 &middot; Token: ETHER &middot; <a href="/ja/whitepaper/">ホワイトペーパー</a></p>
+
+  <h2>1. はじめに</h2>
+  <p>本書（イエローペーパー）は、Ethercoinの分散型AIコンピューティングネットワークの技術アーキテクチャを定義するものである。このネットワークは、分散型で検閲耐性があり、検証可能な実行環境を、汎用的なAI推論、モデル最適化、および知識蒸留のために提供する。</p>
+  <p>中核的な課題：<strong>いかなる単一の当事者も信頼することなく、異種の「有用な計算」を正確に測定し、かつ不正を体系的に防止する方法</strong>。本ドキュメントでは、EtherFLOP測定基準、階層型検証フレームワーク、アンチチートアルゴリズム、および完全な蒸留プロトコル仕様について詳述する。</p>
+
+  <h2>2. システム概要</h2>
+  <p>Ethercoinは階層型アーキテクチャを採用している：</p>
+  <pre>+---------------------------------------------------+
+|              Application Layer                     |
+|   +-----------+ +------------+ +----------------+ |
+|   | Inference | |Optimization| |  Distillation   | |
+|   +-----------+ +------------+ +----------------+ |
++---------------------------------------------------+
+|         Market &amp; Consensus Layer                   |
+|   +--------------------------------------------+  |
+|   |Task Matching|Verification|Settlement/Slashing| |
+|   +--------------------------------------------+  |
++---------------------------------------------------+
+|            Execution Layer                         |
+|   +----------+ +----------+ +------------------+  |
+|   |GPU Nodes | |Proxies   | |  Verifiers       |  |
+|   +----------+ +----------+ +------------------+  |
++---------------------------------------------------+
+|         DA &amp; Storage Layer                         |
+|         IPFS / Filecoin / On-chain Events          |
++---------------------------------------------------+</pre>
+  <p><strong>オンチェーン：</strong>Ethercoinネイティブチェーン（EVM互換）上のスマートコントラクト。</p>
+  <p><strong>オフチェーン：</strong>ノードクライアント、スケジューリングサービス、分散プロキシネットワーク、P2P通信を行うGPU実行環境。</p>
+
+  <h2>3. EtherFLOP：測定システム</h2>
+
+  <h3>3.1 単位定義</h3>
+  <p><strong>EtherFLOP（EFLOP）</strong> = 10<sup>15</sup>回の浮動小数点演算。ベースラインモデル：標準化されたフリーズ状態の<strong>LLaMA-7B</strong>による1回のフォワードパス（入力 = 1トークン、出力ロジット = 語彙サイズ）。理論FLOPs = 2 &times; パラメータ数 &times; シーケンス長。公開計算され、独立して監査可能である。</p>
+
+  <h3>3.2 タスクワークロード推定</h3>
+  <p>任意の提出モデルM（IPFS CIDで識別）と入力形状（バッチ、シーケンス長）について、オフチェーンのスケジューラが計算グラフを解析し、理論FLOPs値F<sub>theoretical</sub>を算出する。この値は<strong>オラクル委員会</strong>（ETHERをステークする複数の独立ノード、BFTコンセンサス）によって署名され、タスクコントラクトの<code>expectedEFLOPS</code>フィールドに書き込まれる。推定誤差は&plusmn;5%以内に収める必要があり、コミュニティガバナンスによって調整される。</p>
+
+  <h3>3.3 供給側の証明</h3>
+  <p>ノードは<code>WorkProof</code>を提出する：</p>
+  <pre>WorkProof {
+    outputCID: bytes32,
+    anchorHashes: bytes32[],  // Optimistic mode: random layer activations
+    zkProof: bytes,           // ZK mode: zk-SNARK proof
+    teeAttestation: bytes     // TEE mode: remote attestation report
+}</pre>
+
+  <h4>3.3.1 オプティミスティック検証</h4>
+  <p><strong>ランダムアンカー生成：</strong>タスク作成時に、オンチェーンVRFがk個のランダムなレイヤーインデックス（l<sub>1</sub>, ..., l<sub>k</sub>）と対応するランダム入力シードを生成する。ノードはこれらのレイヤーの活性化ハッシュを提供する。</p>
+  <p><strong>検証者スポットチェック：</strong>ランダムに選ばれた検証者がIPFSからモデルと入力をダウンロードし、指定されたレイヤーを再実行してハッシュを比較する。すべてのk個のアンカーが一致した場合、計算は受理される。計算の一部fをスキップした不正者に対する検出確率は1 - (1-f)<sup>k</sup>であり、kに応じて指数的に1に収束する。</p>
+  <p><strong>バイナリチャレンジ：</strong>検証者がアンカーの不一致を検出した場合、オンチェーン上でインタラクティブなバイナリゲームを開始する。両当事者は段階的に紛争を単一の演算に絞り込む。コントラクトはその単一ステップを一定のガスコストで実行し、勝者を決定する。</p>
+
+  <h4>3.3.2 ゼロ知識証明</h4>
+  <p>ノードはZKコンパイラ（例：zkLLVMまたはカスタム回路）を使用して、モデル推論をR1CS/AIR制約システムに変換し、zk-SNARK証明を生成する。コントラクトは証明の有効性を検証する。回路サイズCは理論FLOPsと固定的な比例関係を持つ（係数&alpha;はガバナンスで設定）。検証済みEFLOPs = C &times; &alpha;。</p>
+
+  <h4>3.3.3 TEEアテステーション</h4>
+  <p>ノードはIntel SGX / AMD SEVエンクレーブ内で推論を実行し、コードハッシュ、入力ハッシュ、出力ハッシュ、およびハードウェア信頼の実行時間を含むリモートアテステーションレポートを生成する。コントラクトはIntel/AMDのオンチェーン公開鍵に対してレポートの署名を検証し、GPU-in-TEEパフォーマンスモデルを使用して実行時間を等価なEFLOPsに変換する。</p>
+
+  <h3>3.4 需要側の測定</h3>
+  <p>ユーザーの支払い = <code>expectedEFLOPS</code> &times; 現在の市場EFLOP価格（オンチェーンオーダーブックで発見される）。チャレンジのステークはタスク価値に比例する。仲裁によりチャレンジが無効と判断された場合、ステークは没収されノードに与えられる。</p>
+
+  <h2>4. コンピューティングマーケットプロトコル</h2>
+
+  <h3>4.1 ノード登録</h3>
+  <p><code>NodeRegistry.register(nodeType, hardwareProof, stakeAmount)</code>を呼び出す。ハードウェア証明はTEE自己アテステーションレポートまたは第三者ベンチマーク結果により提出され、偽証はスラッシュ対象となる。オンチェーン上の<strong>レピュテーション</strong>は、タスク完了率、正確性比率、平均応答時間から計算され、タスク割り当ての重みに影響する。</p>
+
+  <h3>4.2 タスクライフサイクル（推論）</h3>
+  <ol>
+    <li><strong>提出：</strong>ユーザーが<code>TaskMarket.createTask(modelCID, inputCID, expectedEFLOPS, verificationMode, reward)</code>を呼び出し、ETHERをロックする。</li>
+    <li><strong>マッチング：</strong>オフチェーンのマッチングエンジンがイベントをリッスンし、レピュテーションと価格に基づいてノードセットを指名する。コントラクトはVRFを使用してノードを選択し、標的型の結託を防ぐ。</li>
+    <li><strong>実行と提出：</strong>ノードが<code>WorkProof</code>を生成し、提出する。</li>
+    <li><strong>検証：</strong>選択されたモードに従って検証が行われる。オプティミスティックモードでは、検証者はチャレンジ期間中にチャレンジを提出できる。</li>
+    <li><strong>決済：</strong>チャレンジ期間後（ZK/TEEの場合は即時）、報酬が分配され、不正が検出された場合はペナルティが発動される。</li>
+  </ol>
+
+  <h3>4.3 アンチチートマトリックス</h3>
+  <table>
+    <tr><th>攻撃</th><th>防御</th><th>実装</th></tr>
+    <tr><td>Sybil</td><td>ステーク＋レピュテーション</td><td>新規ノードのタスク制限 = f(ステーク, 過去のレピュテーション)</td></tr>
+    <tr><td>偽装計算</td><td>階層型検証</td><td>オプティミスティックアンカー / ZK証明 / TEEアテステーション</td></tr>
+    <tr><td>モデルすり替え</td><td>重みハッシュホワイトリスト＋アンカーチェック</td><td><code>modelCID</code>はオンチェーンである必要あり。異なるモデルアーキテクチャは異なる活性化分布を生み出す</td></tr>
+    <tr><td>買い手と売り手の結託</td><td>ランダム検証者選択＋検証者ステーキング</td><td>VRFが検証者を選択、検証者のステークはマイナーのステークと一致</td></tr>
+    <tr><td>勾配詐欺</td><td>チェックポイント評価＋オプティマイザ状態ハッシュ</td><td>検証者がテストセット推論を実行、メトリック改善なし＝スラッシュ</td></tr>
+    <tr><td>蒸留の偽装</td><td>独立した経路の再現＋プロキシ署名</td><td>検証者は異なるプロキシ経路でレスポンスを取得、意味的類似性を比較</td></tr>
+    <tr><td>プロキシ改ざん</td><td>経路署名＋異常検知</td><td>各ホップがペイロードハッシュチェーンに署名、不一致があった場合中間ホップにペナルティ</td></tr>
+  </table>
+
+  <h2>5. 推論＆最適化技術仕様</h2>
+
+  <h3>5.1 推論ABI</h3>
+  <p>標準EIABI：</p>
+  <pre>{
+  "model_cid": "bafy...",
+  "input": {"prompt": "...", "max_tokens": 256, "temperature": 0.7},
+  "expectedEFLOPS": 1500,
+  "verificationMode": "optimistic" | "zk" | "tee"
+}</pre>
+
+  <h3>5.2 最適化タスク</h3>
+  <p>タスクは最適化されたモデルCIDと作業証明（量子化誤差レポートやファインチューニングされた重みの差分ハッシュを含む）を出力する。検証者は最適化を再現し、結果を比較する。</p>
+
+  <h2>6. 蒸留プロトコル</h2>
+
+  <h3>6.1 設計目標</h3>
+  <p>クローズドソースAPIから知識を抽出し、検証可能で検閲耐性のあるプロセスを実現する。ワークロードは「有効データポイント」で測定される。</p>
+
+  <h3>6.2 中核コントラクト：<code>DistillationMarket</code></h3>
+  <ul>
+    <li><code>createTask(targetModel, reward, promptTreeRoot)</code>：作成者がETHERをロックする。</li>
+    <li><code>claimBatch(taskID, stake)</code>：マイナーがETHERをステークし、プロンプトバッチを請求する。</li>
+    <li><code>submitBatch(taskID, batchID, dataCID, responseHash, proxyPathSigs)</code>：結果とプロキシ経路署名を提出する。</li>
+    <li><code>challengeBatch(taskID, batchID, proof)</code>：検証者がチャレンジを提出する。</li>
+    <li><code>finalizeBatch(taskID, batchID)</code>：決済。</li>
+  </ul>
+
+  <h3>6.3 プロンプト配布</h3>
+  <p>DAOはトピックツリーを管理し、そのルートはコントラクトに保存される。マイナーはVRFを介してリーフハッシュとマークルパスを受け取り、IPFSからオフチェーンで平文のプロンプトを取得する。</p>
+
+  <h3>6.4 プロキシネットワーク＆経路署名</h3>
+  <p>プロキシノードは公開鍵を登録し、ETHERをステークする。マイナーはオニオン暗号化されたマルチホップ経路を構築し、各ホップが次のアドレスを復号して転送する。レスポンスには経路署名チェーンが付与される：<code>Sign<sub>N<sub>k</sub></sub>(...Sign<sub>N<sub>2</sub></sub>(Sign<sub>N<sub>1</sub></sub>(responseHash)))</code>。コントラクトは経路の整合性を検証する。</p>
+
+  <h3>6.5 検証と測定</h3>
+  <p><strong>意味的検証：</strong>検証者は、<strong>完全に異なるプロキシ経路</strong>を通じて同一のプロンプトに対するレスポンスを取得し、公開埋め込みモデルを使用してコサイン類似度を計算する。閾値&theta;（例：0.92）以上の類似度は、有効なデータポイントとしてカウントされる。</p>
+  <p><strong>測定：</strong>マイナーの報酬 = 検証済みデータポイント数 &times; 単位データポイント価格。無効なデータポイントは報酬ゼロとなり、レピュテーションが低下する。</p>
+
+  <h3>6.6 仲裁</h3>
+  <p>紛争は仲裁コントラクトによって処理される。複数の仲裁者（高ステークの検証者）が独立して判断し投票する。多数決の決定が優先される。</p>
+
+  <h2>7. 分散型トレーニング統合</h2>
+  <p>トレーニングタスクはEtherFLOPフレームワークに組み込まれる。ユーザーはベースモデルCID、データセットCID、およびトレーニング設定を指定する。<code>expectedEFLOPS</code>は、最適化ステップ数合計 &times; ステップあたりFLOPsから計算される。</p>
+  <p>ノードは定期的にチェックポイントハッシュと勾配ノルムの中間値を提出する。検証者はランダムなチェックポイントを再実行し、実際の実行を確認する。トレーニング後、検証者は公開テストセット上でモデルのパフォーマンスを評価する。改善目標に達しなかった場合、部分的なステークのスラッシングが行われる。</p>
+
+  <h2>8. セキュリティとプライバシー</h2>
+  <ul>
+    <li><strong>測定のセキュリティ：</strong>アンカーモデルとオラクル委員会により、EFLOPsは操作不可能となる。ZK証明はトラストレスの測定を提供する。</li>
+    <li><strong>Sybil防御：</strong>高額なステーキングと、レピュテーションに応じてスケールするタスク制限。</li>
+    <li><strong>プライバシー：</strong>推論の入力はTEE内部で復号される。蒸留プロンプトはプロキシネットワークを通じてオニオン暗号化される。</li>
+    <li><strong>検閲耐性：</strong>すべてのコントラクトはアップグレード不可またはDAO制御である。プロキシネットワークはlibp2pノイズ暗号化により分散化されている。</li>
+  </ul>
+
+  <h2>9. 経済パラメータ</h2>
+  <table>
+    <tr><th>パラメータ</th><th>初期値</th><th>説明</th></tr>
+    <tr><td><code>EFLOP_BASELINE_MODEL</code></td><td>Qm... (LLaMA-7B)</td><td>ベースラインモデルCID</td></tr>
+    <tr><td><code>OPTIMISTIC_ANCHORS_DEFAULT</code></td><td>5</td><td>デフォルトのスポットチェックアンカー数</td></tr>
+    <tr><td><code>ZK_PROOF_ALPHA</code></td><td>1.2</td><td>FLOPs対回路サイズの係数</td></tr>
+    <tr><td><code>MIN_STAKE_MINING</code></td><td>1000 ETHER</td><td>マイナーの最小ステーク</td></tr>
+    <tr><td><code>MIN_STAKE_DISTILL</code></td><td>100 ETHER</td><td>蒸留マイナーの最小ステーク</td></tr>
+    <tr><td><code>CHALLENGE_PERIOD</code></td><td>604800 s</td><td>チャレンジ期間（7日間）</td></tr>
+    <tr><td><code>VALIDATOR_FEE_RATIO</code></td><td>5%</td><td>検証者手数料の割合</td></tr>
+    <tr><td><code>SLASH_RATIO</code></td><td>50%</td><td>不正ペナルティの割合</td></tr>
+    <tr><td><code>SIMILARITY_THRESHOLD</code></td><td>0.92</td><td>蒸留品質の閾値</td></tr>
+  </table>
+  <p>すべてのパラメータはシステムコントラクトにハードコードされている。DAOは提案を通じてこれらを変更できる（範囲制限とタイムロック付き）。</p>
+
+  <h2>10. 結論</h2>
+  <p>Ethercoinの技術アーキテクチャは、<strong>有用な計算の検証可能な測定</strong>を中心に据えている。EtherFLOP単位、階層型証明、ランダムアンカー、ZK/TEE検証、および包括的なアンチチートマトリックスを通じて、ネットワークは信頼できない環境でもAIコンピューティングの公正で安全な取引を可能にする。蒸留プロトコルは、このコンピューティングマーケットを知識解放のためのツールへと拡張する。</p>
+  <blockquote>Website: <strong>https://ethercoin.org</strong> &middot; ホワイトペーパーとコードリポジトリは同じドメインで公開予定です。</blockquote>
+  <p style="text-align:center;margin-top:40px;color:#888;font-size:14px;"><a href="/ja/">Back to Ethercoin.org</a></p>
+</div>
+</body>
+</html>
